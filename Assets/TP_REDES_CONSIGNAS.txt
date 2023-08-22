@@ -1,0 +1,34 @@
+Videojuegos en Red
+Trabajo práctico
+Fecha de Entrega: 18/09/2023
+Concepto
+Se deberá armar un juego en Unity multijugador. El juego deberá ser de al menos 3
+jugadores, utilizando las características vistas en clase, incluyendo:
+● RPCs
+● Control de animaciones
+● Network Manager
+Como consigna, además deberá:
+● No iniciar el juego hasta que al menos haya 3 clientes conectados.
+● Tener una condición de victoria y derrota, y notificará a todos los usuarios de la
+misma.
+● El juego debe ser Non-Authoritative. No podrá haber ningún desfase entre servidor
+y cliente.
+● Sincronizar al menos 10 objetos en escena simultáneamente y constantemente en
+los cuales 3 sean completamente diferentes. Ej:
+○ Timer (Seconds: float)
+○ Character (Position: Vector3, Rotation: Quaternion)
+○ Projectiles (Velocity: Vector3)
+Requisitos
+● Puede ser individual o grupal (3 alumnos). Todos los integrantes deberán saber el
+código.
+● La versión del proyecto debe ser la que dispone UADE.
+● El proyecto debe ser comprimido en un archivo .rar, en donde contenga la carpeta
+del proyecto y el ejecutable (Ej: SebastianGarayTP1Redes23.rar). El ejecutable
+debe poder abrirse en modo ventana.
+Criterios de evaluación
+Se tendrán en cuenta para la aprobación de este trabajo los siguientes puntos:
+● Correcta implementación de los temas a tratar.
+● Complejidad basada en la cantidad de integrantes del grupo.
+● Justificación para cada decisión en la estructura de los algoritmos.
+● Prolijidad y legibilidad del código, así como también en la estructura del proyecto.
+● Cumplimiento de las pautas de presentación (entrega a término y formato).
