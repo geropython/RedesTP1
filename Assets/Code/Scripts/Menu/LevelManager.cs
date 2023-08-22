@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public GameObject _panelSplash;
     public void QuitGame()
     {
         Application.Quit();
@@ -14,6 +15,10 @@ public class LevelManager : MonoBehaviour
     public void Menu()
     {
         SceneManager.LoadScene(0);
+    }
+    public void Splash()
+    {
+        _panelSplash.SetActive(false);
     }
     public void Options()
     {
