@@ -8,13 +8,12 @@ public class Box : NetworkBehaviour
     //ESTE SCRIPT CREO QUE NO NOS SERVIRIA, SOLO ES UNA PRUEBA PERO POEMOS HACER ALGO SIMILAR A LA LINEA DE META PARA VERIFICAR CUANDO UN PLAYER TOCA EL BOX COLLIDER DE LA LLEGADA.
     public void OnTriggerEnter(Collider other)
     {
-        // TIRA ERROR PORQUE NO TENEMOS PLAYER MODEL, SINO PROMETEUS CAR CONTROLLER.
-        //if (!IsOwner) return;
-        //var player = other.GetComponent<PlayerModel>();
-        //if (player == null) return;
-        //var playerID = player.OwnerClientId;
+        if (!IsOwner) return;
+        var player = other.GetComponent<CarController>();
+        if (player == null) return;
+        var playerID = player.OwnerClientId;
 
-        //RequestChangeColorServerRpc(playerID);
+        RequestChangeColorServerRpc(playerID);
     }
 
     [ServerRpc]

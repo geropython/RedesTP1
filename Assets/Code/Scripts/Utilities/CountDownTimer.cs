@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class CountDownTimer : MonoBehaviour
 {
-   [SerializeField] private TextMeshProUGUI countdownText;
-   [SerializeField] private CarController carController;
+    [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private CarController carController;
+    [SerializeField] private Timer timer;
 
     public IEnumerator StartCountdown()
     {
@@ -23,11 +24,10 @@ public class CountDownTimer : MonoBehaviour
 
         countdownText.text = "GO!";
         carController.enabled = true;
+        timer.StartTimer();
 
         yield return new WaitForSeconds(1);
 
         countdownText.text = "";
     }
-
-
 }

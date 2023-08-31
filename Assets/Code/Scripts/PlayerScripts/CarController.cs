@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    //MVC
     public CarModel model;
+
     public CarView view;
 
+    //SPEED VARIABLES
     private float currentSpeed = 0.0f;
+
     private float targetSpeed = 0.0f;
+
+    //RIGIDBODY
     private Rigidbody rb;
+
+    //NETWORKING
+    public ulong OwnerClientId { get; internal set; }
 
     private void Start()
     {

@@ -10,15 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1006208666329676816, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: speed
-      value: 14
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1006208666329676816, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: brakeSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1006208666329676816, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: driftForce
-      value: 10
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1006208666329676816, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: rotationSpeed
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: model
@@ -71,6 +75,14 @@ PrefabInstance:
     - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_Drag
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: m_Mass
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: m_ImplicitCom
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
