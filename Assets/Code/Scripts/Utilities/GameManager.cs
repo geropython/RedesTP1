@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     private int laps = 0;
+    public CountDownTimer countdownTimer;
 
     //SINGLETON PATTERN
     private void Awake()
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //STARTS COUNTDOWN TIMER:
+    private void Start()
+    {
+        StartCoroutine(countdownTimer.StartCountdown());
+    }
+
     public void IncreaseLap()
     {
         laps++;
@@ -34,12 +41,11 @@ public class GameManager : MonoBehaviour
     private void Win()
     {
         print("WinGame!");
-       // SceneManager.LoadScene("WinGame");
+        // SceneManager.LoadScene("WinGame");
     }
 
     public int GetLaps()
     {
         return laps;
     }
-
 }
