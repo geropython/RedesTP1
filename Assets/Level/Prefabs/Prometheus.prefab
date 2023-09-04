@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7674450163064281047}
   - component: {fileID: 6036506080682753964}
   - component: {fileID: 1444204795505470030}
+  - component: {fileID: 337717965695582458}
   m_Layer: 0
   m_Name: Prometheus
   m_TagString: Player
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 285843383447674598}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029653306}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -3.52, y: 1.2795532, z: -18.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -96,7 +97,7 @@ MonoBehaviour:
   useEffects: 1
   RLWParticleSystem: {fileID: 4086686684234672358}
   RRWParticleSystem: {fileID: 2025585926022063722}
-  RLWTireSkid: {fileID: 4666679908525951483}
+  RLWTireSkid: {fileID: 626468608689240739}
   RRWTireSkid: {fileID: 7735051200039136021}
   useUI: 1
   carSpeedText: {fileID: 0}
@@ -131,8 +132,28 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.4825008, z: 1.0432272}
-  m_Center: {x: 0.04000002, y: 0.5050187, z: 2.2016137}
+  m_Size: {x: 1, y: 0.4825008, z: 1.0090704}
+  m_Center: {x: 0.04000002, y: 0.5050187, z: 2.1845353}
+--- !u!114 &337717965695582458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285843383447674598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &545628763539901295
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +647,7 @@ Transform:
   m_Children:
   - {fileID: 4086686684249966690}
   - {fileID: 2025585926041421550}
-  - {fileID: 4666679908525951482}
+  - {fileID: 626468608689240738}
   - {fileID: 7735051200039136020}
   m_Father: {fileID: 494900138884941560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1375,12 +1396,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab4ea67cd9337c341af0bd7182c60f92, type: 3}
---- !u!4 &4666679908525951482 stripped
+--- !u!4 &626468608689240738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7344874181333496817, guid: ab4ea67cd9337c341af0bd7182c60f92, type: 3}
   m_PrefabInstance: {fileID: 7881182551925639507}
   m_PrefabAsset: {fileID: 0}
---- !u!96 &4666679908525951483 stripped
+--- !u!96 &626468608689240739 stripped
 TrailRenderer:
   m_CorrespondingSourceObject: {fileID: 7344874181333496816, guid: ab4ea67cd9337c341af0bd7182c60f92, type: 3}
   m_PrefabInstance: {fileID: 7881182551925639507}
