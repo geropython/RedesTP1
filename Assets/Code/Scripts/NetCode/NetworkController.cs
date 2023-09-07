@@ -35,7 +35,7 @@ public class NetworkController : MonoBehaviour
 
     private void LoadScene()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("TestScene", LoadSceneMode.Single);
     }
 
     private void SetInteractable(bool v)
@@ -47,7 +47,7 @@ public class NetworkController : MonoBehaviour
 
     private void OnServerStarted()
     {
-        print("Server Seba");
+        print("Server Tomi");
         if (NetworkManager.Singleton.IsServer)
         {
             LoadScene();
