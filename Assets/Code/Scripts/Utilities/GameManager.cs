@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject _panelWin;
     public static GameManager Instance { get; private set; }
     private int laps = 0;
     public CountDownTimer countdownTimer;
@@ -34,16 +33,18 @@ public class GameManager : MonoBehaviour
         laps++;
         if (laps >= 3)
         {
-            Win();
+            _panelWin.SetActive(true);
         }
     }
 
-    private void Win()
+    public void Win()
     {
-        print("WinGame!");
-        // SceneManager.LoadScene("WinGame");
+        SceneManager.LoadScene(0);
     }
-
+    public void NextTrack()
+    {
+        //proximo nivel
+    }
     public int GetLaps()
     {
         return laps;
