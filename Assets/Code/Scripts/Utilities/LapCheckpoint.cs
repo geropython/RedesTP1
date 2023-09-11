@@ -24,10 +24,12 @@ public class LapCheckpoint : MonoBehaviour
             // Si lo hizo, aumenta el contador de vueltas.
             if (allCheckpointsCleared)
             {
+                //NO SIRVE. CADA AUTO DEBE CONTABILIZAR SUS VUELTAS.
+
                 GameManager.Instance.IncreaseLap();
                 int laps = GameManager.Instance.GetLaps();
                 Debug.Log("Has completado " + laps + " vuelta(s). Te quedan " + (3 - laps) + " vuelta(s).");
-                
+
                 //resetea los checkpoints:
                 foreach (Checkpoint checkpoint in checkpoints)
                 {

@@ -26,13 +26,13 @@ public class CarController : MonoBehaviour  //Tiene que ser NetWorkBehaviour
         rb = GetComponent<Rigidbody>();
 
         ////NETWORK BEHAVIOUR:
-        //if (IsOwner)
+        //if (IsOwner --> CAMERA CONTROLLER PARA SEGUIR)
         //{
         //    model = GetComponent<CarModel>();
         //}
         //else
         //{
-        //    Destroy(this);
+        //    Destroy(this);   DESTROY NO VA. cuando es netowrk behaviour. poner  ENABLE= FALSE
         //}
     }
 
