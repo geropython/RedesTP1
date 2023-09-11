@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarController : MonoBehaviour  //Tiene que ser NetWorkBehaviour
 {
     //MVC
     public CarModel model;
@@ -23,6 +24,16 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        ////NETWORK BEHAVIOUR:
+        //if (IsOwner)
+        //{
+        //    model = GetComponent<CarModel>();
+        //}
+        //else
+        //{
+        //    Destroy(this);
+        //}
     }
 
     private void Update()
@@ -61,7 +72,7 @@ public class CarController : MonoBehaviour
             targetSpeed = 0;
         }
 
-        // Steering
+        // Steering LEFT/RIGHT
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(0, -model.rotationSpeed * Time.deltaTime, 0);
