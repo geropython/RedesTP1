@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
-    //ESTE SCRIPT CREO QUE NO NOS SERVIRIA, SOLO ES UNA PRUEBA PERO POEMOS HACER ALGO SIMILAR A LA LINEA DE META PARA VERIFICAR CUANDO UN PLAYER TOCA EL BOX COLLIDER DE LA LLEGADA.
     public void OnTriggerEnter(Collider other)
     {
         if (!IsOwner) return;

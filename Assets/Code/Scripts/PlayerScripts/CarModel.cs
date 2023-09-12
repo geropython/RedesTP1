@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CarModel : MonoBehaviour
+public class CarModel : NetworkBehaviour
 {
     public float speed = 10.0f;
     public float rotationSpeed = 100.0f;

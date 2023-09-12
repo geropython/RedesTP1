@@ -11,9 +11,9 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
     public CarView view;
 
     //SPEED VARIABLES
-    private float currentSpeed = 0.0f;
+    private float currentSpeed;
 
-    private float targetSpeed = 0.0f;
+    private float targetSpeed;
 
     //RIGIDBODY
     private Rigidbody rb;
