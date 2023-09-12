@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 3.4.1 commit date:2022-12-19, commit time:17:00, hash:55485cb379f7</authoring_tool>
+    </contributor>
+    <created>2023-03-01T13:49:50</created>
+    <modified>2023-03-01T13:49:50</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="_32_0_59_191_48_48-effect">
+      <profile_COMMON>
+        <newparam sid="_32_0_59_191_48_48_png-surface">
+          <surface type="2D">
+            <init_from>_32_0_59_191_48_48_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="_32_0_59_191_48_48_png-sampler">
+          <sampler2D>
+            <source>_32_0_59_191_48_48_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="_32_0_59_191_48_48_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="_20_0_59_190_48_48-effect">
+      <profile_COMMON>
+        <newparam sid="_20_0_59_190_48_48_png-surface">
+          <surface type="2D">
+            <init_from>_20_0_59_190_48_48_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="_20_0_59_190_48_48_png-sampler">
+          <sampler2D>
+            <source>_20_0_59_190_48_48_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="_20_0_59_190_48_48_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="_08_0_63_223_48_48-effect">
+      <profile_COMMON>
+        <newparam sid="_08_0_63_223_48_48_png-surface">
+          <surface type="2D">
+            <init_from>_08_0_63_223_48_48_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="_08_0_63_223_48_48_png-sampler">
+          <sampler2D>
+            <source>_08_0_63_223_48_48_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="_08_0_63_223_48_48_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="_96_0_62_223_48_48-effect">
+      <profile_COMMON>
+        <newparam sid="_96_0_62_223_48_48_png-surface">
+          <surface type="2D">
+            <init_from>_96_0_62_223_48_48_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="_96_0_62_223_48_48_png-sampler">
+          <sampler2D>
+            <source>_96_0_62_223_48_48_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="_96_0_62_223_48_48_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="_08_0_63_223_48_48_png" name="_08_0_63_223_48_48_png">
+      <init_from>908_0_63_223_48_48.png</init_from>
+    </image>
+    <image id="_20_0_59_190_48_48_png" name="_20_0_59_190_48_48_png">
+      <init_from>920_0_59_190_48_48.png</init_from>
+    </image>
+    <image id="_32_0_59_191_48_48_png" name="_32_0_59_191_48_48_png">
+      <init_from>932_0_59_191_48_48.png</init_from>
+    </image>
+    <image id="_96_0_62_223_48_48_png" name="_96_0_62_223_48_48_png">
+      <init_from>896_0_62_223_48_48.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="_32_0_59_191_48_48-material" name="932_0_59_191_48_48">
+      <instance_effect url="#_32_0_59_191_48_48-effect"/>
+    </material>
+    <material id="_20_0_59_190_48_48-material" name="920_0_59_190_48_48">
+      <instance_effect url="#_20_0_59_190_48_48-effect"/>
+    </material>
+    <material id="_08_0_63_223_48_48-material" name="908_0_63_223_48_48">
+      <instance_effect url="#_08_0_63_223_48_48-effect"/>
+    </material>
+    <material id="_96_0_62_223_48_48-material" name="896_0_62_223_48_48">
+      <instance_effect url="#_96_0_62_223_48_48-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="crate_nitro_hi-mesh" name="crate_nitro_hi">
+      <mesh>
+        <source id="crate_nitro_hi-mesh-positions">
+          <float_array id="crate_nitro_hi-mesh-positions-array" count="432">0.876 0 0 0.876 0 -0.87 0 0 -0.87 0.876 0 0 0 0 -0.87 0 0 0 0 0 0 0 0 -0.87 -0.87 0 -0.87 0 0 0 -0.87 0 -0.87 -0.87 0 0 0 0 0 -0.87 0 0 0 0 0.876 0 0 0.876 -0.87 0 0 -0.87 0 0.876 0 0 0 0 0 0.876 0.876 0 0.876 0 0 0 0.876 0 0.876 0.876 0 0 -0.87 1.747 0.876 -0.87 1.747 0 0 1.747 0 0 1.747 0 -0.87 1.747 0 -0.87 1.747 -0.87 0 1.747 0 -0.87 1.747 -0.87 0 1.747 -0.87 0 1.747 0 0 1.747 -0.87 0.876 1.747 -0.87 0 1.747 0 0.876 1.747 -0.87 0.876 1.747 0 0 1.747 0 0.876 1.747 0 0.876 1.747 0.876 0 1.747 0 0.876 1.747 0.876 0 1.747 0.876 0 1.747 0 0 1.747 0.876 -0.87 1.747 0.876 -0.87 1.747 0.876 0 1.747 0.876 0 0.87 0.876 0 0.87 0.876 0 1.747 0.876 0.876 1.747 0.876 0 0.87 0.876 0.876 1.747 0.876 0.876 0.87 0.876 0 0.87 0.876 0.876 0.87 0.876 0.876 0 0.876 0 0.87 0.876 0.876 0 0.876 0 0 0.876 0 0.87 0.876 0 0 0.876 -0.87 0 0.876 0 0.87 0.876 -0.87 0 0.876 -0.87 0.87 0.876 0 0.87 0.876 -0.87 0.87 0.876 -0.87 1.747 0.876 0.876 1.747 -0.87 0 1.747 -0.87 0 0.87 -0.87 0 0.87 -0.87 0 1.747 -0.87 -0.87 1.747 -0.87 0 0.87 -0.87 -0.87 1.747 -0.87 -0.87 0.87 -0.87 0 0.87 -0.87 -0.87 0.87 -0.87 -0.87 0 -0.87 0 0.87 -0.87 -0.87 0 -0.87 0 0 -0.87 0 0.87 -0.87 0 0 -0.87 0.876 0 -0.87 0 0.87 -0.87 0.876 0 -0.87 0.876 0.87 -0.87 0 0.87 -0.87 0.876 0.87 -0.87 0.876 1.747 -0.87 -0.87 0 0.876 -0.87 0 0 -0.87 0.87 0 -0.87 0.87 0 -0.87 0 0 -0.87 0 -0.87 -0.87 0.87 0 -0.87 0 -0.87 -0.87 0.87 -0.87 -0.87 0.87 0 -0.87 0.87 -0.87 -0.87 1.747 -0.87 -0.87 0.87 0 -0.87 1.747 -0.87 -0.87 1.747 0 -0.87 0.87 0 -0.87 1.747 0 -0.87 1.747 0.876 -0.87 0.87 0 -0.87 1.747 0.876 -0.87 0.87 0.876 -0.87 0.87 0 -0.87 0.87 0.876 -0.87 0 0.876 0.876 0 -0.87 0.876 0 0 0.876 0.87 0 0.876 0.87 0 0.876 0 0 0.876 0 0.876 0.876 0.87 0 0.876 0 0.876 0.876 0.87 0.876 0.876 0.87 0 0.876 0.87 0.876 0.876 1.747 0.876 0.876 0.87 0 0.876 1.747 0.876 0.876 1.747 0 0.876 0.87 0 0.876 1.747 0 0.876 1.747 -0.87 0.876 0.87 0 0.876 1.747 -0.87 0.876 0.87 -0.87 0.876 0.87 0 0.876 0.87 -0.87 0.876 0 -0.87</float_array>
+          <technique_common>
+            <accessor source="#crate_nitro_hi-mesh-positions-array" count="144" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="crate_nitro_hi-mesh-normals">
+          <float_array id="crate_nitro_hi-mesh-normals-array" count="18">0 -1 0 0 1 0 0 0 1 0 0 -1 -1 0 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#crate_nitro_hi-mesh-normals-array" count="6" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="crate_nitro_hi-mesh-map-0">
+          <float_array id="crate_nitro_hi-mesh-map-0-array" count="288">0 1 1 0 1 1 0 1 0 0 1 0 0 1 1 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 0 1 0 0 1 0 1 1 0 1 0 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 0 1 0 0 0 1 1 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 0 1 0 0 1 0 1 1 0 1 0 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1 1 0 0 1 0 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 0 1 0 0 1 0 1 1 0 1 0 0 1 1 0 1 0 0 1 0 1 1 0 1 1 0 1 1</float_array>
+          <technique_common>
+            <accessor source="#crate_nitro_hi-mesh-map-0-array" count="144" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="crate_nitro_hi-mesh-colors-Color" name="Color">
+          <float_array id="crate_nitro_hi-mesh-colors-Color-array" count="576">0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.2666667 0.2666667 0.2666667 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5019608 0.5019608 0.5019608 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.5803922 0.5803922 0.5803922 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1 0.4235294 0.4235294 0.4235294 1</float_array>
+          <technique_common>
+            <accessor source="#crate_nitro_hi-mesh-colors-Color-array" count="144" stride="4">
+              <param name="R" type="float"/>
+              <param name="G" type="float"/>
+              <param name="B" type="float"/>
+              <param name="A" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="crate_nitro_hi-mesh-vertices">
+          <input semantic="POSITION" source="#crate_nitro_hi-mesh-positions"/>
+        </vertices>
+        <triangles material="_32_0_59_191_48_48-material" count="12">
+          <input semantic="VERTEX" source="#crate_nitro_hi-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#crate_nitro_hi-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#crate_nitro_hi-mesh-map-0" offset="2" set="0"/>
+          <input semantic="COLOR" source="#crate_nitro_hi-mesh-colors-Color" offset="3" set="0"/>
+          <p>0 0 0 0 2 0 1 1 1 0 2 2 3 0 3 3 5 0 4 4 4 0 5 5 39 1 39 39 41 1 40 40 40 1 41 41 42 1 42 42 44 1 43 43 43 1 44 44 51 2 51 51 53 2 52 52 52 2 53 53 54 2 54 54 56 2 55 55 55 2 56 56 75 3 75 75 77 3 76 76 76 3 77 77 78 3 78 78 80 3 79 79 79 3 80 80 111 4 111 111 113 4 112 112 112 4 113 113 114 4 114 114 116 4 115 115 115 4 116 116 135 5 135 135 137 5 136 136 136 5 137 137 138 5 138 138 140 5 139 139 139 5 140 140</p>
+        </triangles>
+        <triangles material="_20_0_59_190_48_48-material" count="12">
+          <input semantic="VERTEX" source="#crate_nitro_hi-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#crate_nitro_hi-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#crate_nitro_hi-mesh-map-0" offset="2" set="0"/>
+          <input semantic="COLOR" source="#crate_nitro_hi-mesh-colors-Color" offset="3" set="0"/>
+          <p>6 0 6 6 8 0 7 7 7 0 8 8 9 0 9 9 11 0 10 10 10 0 11 11 24 1 24 24 26 1 25 25 25 1 26 26 45 1 45 45 47 1 46 46 46 1 47 47 57 2 57 57 59 2 58 58 58 2 59 59 60 2 60 60 62 2 61 61 61 2 62 62 81 3 81 81 83 3 82 82 82 3 83 83 84 3 84 84 86 3 85 85 85 3 86 86 96 4 96 96 98 4 97 97 97 4 98 98 117 4 117 117 119 4 118 118 118 4 119 119 120 5 120 120 122 5 121 121 121 5 122 122 141 5 141 141 143 5 142 142 142 5 143 143</p>
+        </triangles>
+        <triangles material="_08_0_63_223_48_48-material" count="12">
+          <input semantic="VERTEX" source="#crate_nitro_hi-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#crate_nitro_hi-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#crate_nitro_hi-mesh-map-0" offset="2" set="0"/>
+          <input semantic="COLOR" source="#crate_nitro_hi-mesh-colors-Color" offset="3" set="0"/>
+          <p>12 0 12 12 14 0 13 13 13 0 14 14 15 0 15 15 17 0 16 16 16 0 17 17 27 1 27 27 29 1 28 28 28 1 29 29 30 1 30 30 32 1 31 31 31 1 32 32 63 2 63 63 65 2 64 64 64 2 65 65 66 2 66 66 68 2 67 67 67 2 68 68 87 3 87 87 89 3 88 88 88 3 89 89 90 3 90 90 92 3 91 91 91 3 92 92 99 4 99 99 101 4 100 100 100 4 101 101 102 4 102 102 104 4 103 103 103 4 104 104 123 5 123 123 125 5 124 124 124 5 125 125 126 5 126 126 128 5 127 127 127 5 128 128</p>
+        </triangles>
+        <triangles material="_96_0_62_223_48_48-material" count="12">
+          <input semantic="VERTEX" source="#crate_nitro_hi-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#crate_nitro_hi-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#crate_nitro_hi-mesh-map-0" offset="2" set="0"/>
+          <input semantic="COLOR" source="#crate_nitro_hi-mesh-colors-Color" offset="3" set="0"/>
+          <p>18 0 18 18 20 0 19 19 19 0 20 20 21 0 21 21 23 0 22 22 22 0 23 23 33 1 33 33 35 1 34 34 34 1 35 35 36 1 36 36 38 1 37 37 37 1 38 38 48 2 48 48 50 2 49 49 49 2 50 50 69 2 69 69 71 2 70 70 70 2 71 71 72 3 72 72 74 3 73 73 73 3 74 74 93 3 93 93 95 3 94 94 94 3 95 95 105 4 105 105 107 4 106 106 106 4 107 107 108 4 108 108 110 4 109 109 109 4 110 110 129 5 129 129 131 5 130 130 130 5 131 131 132 5 132 132 134 5 133 133 133 5 134 134</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="crate_nitro_hi" name="crate_nitro_hi" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 -1.62921e-7 -1 0 0 1 -1.62921e-7 0 0 0 0 1</matrix>
+        <instance_geometry url="#crate_nitro_hi-mesh" name="crate_nitro_hi">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="_32_0_59_191_48_48-material" target="#_32_0_59_191_48_48-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+              <instance_material symbol="_20_0_59_190_48_48-material" target="#_20_0_59_190_48_48-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+              <instance_material symbol="_08_0_63_223_48_48-material" target="#_08_0_63_223_48_48-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+              <instance_material symbol="_96_0_62_223_48_48-material" target="#_96_0_62_223_48_48-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

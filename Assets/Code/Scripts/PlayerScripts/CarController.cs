@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CarController : MonoBehaviour  //Tiene que ser NetWorkBehaviour
+public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
 {
     //MVC
     public CarModel model;
@@ -19,25 +19,28 @@ public class CarController : MonoBehaviour  //Tiene que ser NetWorkBehaviour
     private Rigidbody rb;
 
     //NETWORKING
-    public ulong OwnerClientId { get; internal set; }
+    public new ulong OwnerClientId { get; internal set; }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        ////NETWORK BEHAVIOUR:
-        //if (IsOwner --> CAMERA CONTROLLER PARA SEGUIR)
-        //{
-        //    model = GetComponent<CarModel>();
-        //}
-        //else
-        //{
-        //    Destroy(this);   DESTROY NO VA. cuando es netowrk behaviour. poner  ENABLE= FALSE
-        //}
+        //NETWORK BEHAVIOUR:
+        if (IsOwner) //-- > CAMERA CONTROLLER PARA SEGUIR)
+        {
+            model = GetComponent<CarModel>();
+        }
+        else
+        {
+            Destroy(this); //DESTROY NO VA.cuando es netowrk behaviour. poner ENABLE = FALSE
+        }
     }
 
     private void Update()
     {
+        //Si YO soy el dueño del Player
+        if (!IsOwner) return;
+
         HandleInput();
         UpdateSpeed();
         MoveCar();

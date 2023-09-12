@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CarView : MonoBehaviour  //Tiene que ser NetWorkBehaviour
+public class CarView : NetworkBehaviour //Tiene que ser NetWorkBehaviour
 {
     //aa:
     public void UpdateCarPosition(Vector3 position)

@@ -7,18 +7,17 @@ public class Instantiator : NetworkBehaviour
 {
     public NetworkObject playerPrefab;
 
-    public override void OnNetworkSpawn()
+    public void Start()
     {
-        if (IsServer)
-        {
-            RequestSpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
-        }
+        //Con el ulong id sabemos cual cliente trata de instanciar
+        ulong id = NetworkManager.Singleton.LocalClientId;
+        RequestSpawnPlayerServerRpc(id);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void RequestSpawnPlayerServerRpc(ulong clientId)
+    private void RequestSpawnPlayerServerRpc(ulong id)
     {
-        var player = Instantiate(playerPrefab);
-        player.SpawnWithOwnership(clientId);
+        var obj = Instantiate<NetworkObject>(playerPrefab);
+        obj.SpawnWithOwnership(id);
     }
 }

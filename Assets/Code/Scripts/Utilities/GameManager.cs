@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     private int laps = 0;
-    public CountDownTimer countdownTimer;
+    //public CountDownTimer countdownTimer;
 
     //SINGLETON PATTERN
     private void Awake()
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     //STARTS COUNTDOWN TIMER: --> ESPERA A LOS 3 JUGADORES PARA COMENZAR. HACER RPC
     private void Start()
     {
-        StartCoroutine(countdownTimer.StartCountdown());
+        //StartCoroutine(countdownTimer.StartCountdown());
     }
 
     public void IncreaseLap()
