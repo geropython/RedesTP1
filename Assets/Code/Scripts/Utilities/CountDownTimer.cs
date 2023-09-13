@@ -31,7 +31,9 @@ public class CountDownTimer : NetworkBehaviour
 
         yield return new WaitForSeconds(1);
         CountdownClientRpc("GO!");
-        timer.StartTimer();
+
+        // Iniciar el cronómetro en todos los clientes
+        timer.StartTimerClientRpc();
 
         yield return new WaitForSeconds(1);
         CountdownClientRpc("");

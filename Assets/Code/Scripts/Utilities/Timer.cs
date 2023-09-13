@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
-public class Timer : NetworkBehaviour 
+public class Timer : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private NetworkVariable<float> startTime = new NetworkVariable<float>(0);
+    private NetworkVariable<float> startTime;
     private bool timerStarted = false;
     private float nextRpcTime = 0.0f;
     private float rpcInterval = 3.0f;  // cada cuantos segundos manda los RPC´S
+
+    private void Awake()
+    {
+        startTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    }
 
     public void StartTimer()
     {
@@ -30,13 +36,19 @@ public class Timer : NetworkBehaviour
 
             timerText.text = minutes + ":" + seconds;
 
-            // Si es el servidor pasó dicho  intervalo de tiempo, envía un RPC
+            // Si es el servidor y pasó dicho  intervalo de tiempo, envía un RPC
             if (IsServer && Time.time >= nextRpcTime)
             {
                 nextRpcTime = Time.time + rpcInterval;
                 CorrectTimerServerRpc(t);
             }
         }
+    }
+
+    [ClientRpc]
+    public void StartTimerClientRpc()
+    {
+        StartTimer();
     }
 
     [ServerRpc]
