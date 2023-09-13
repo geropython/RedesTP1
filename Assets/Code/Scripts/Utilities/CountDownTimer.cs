@@ -1,37 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CountDownTimer : MonoBehaviour
+public class CountDownTimer : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI countdownText;
-    [SerializeField] private CarController carController;
-    [SerializeField] private Timer timer;
+    private Timer timer;
+
+    [System.Obsolete]
+    private void Start()
+    {
+        timer = FindObjectOfType<Timer>();
+        if (IsOwner)
+        {
+            StartCoroutine(StartCountdown());
+        }
+    }
 
     public IEnumerator StartCountdown()
     {
-        carController.enabled = false;
-        //FUNCION LLAMADA POR EL CLIENT RPC (FIND OBJECT OF TYPE) --> Manda a todos los controladores que inicialicen.
-        //SI SOY DUEÑO, LO INICIALIZO, SINO, NO.
-        //UTILIZAR ESTO:
-        //NetworkManager.Singleton.IsServer(true)
         countdownText.text = "3";
         yield return new WaitForSeconds(1);
+        CountdownClientRpc("2");
 
-        countdownText.text = "2";
         yield return new WaitForSeconds(1);
+        CountdownClientRpc("1");
 
-        countdownText.text = "1";
         yield return new WaitForSeconds(1);
-
-        countdownText.text = "GO!";
-        carController.enabled = true;
+        CountdownClientRpc("GO!");
         timer.StartTimer();
 
         yield return new WaitForSeconds(1);
+        CountdownClientRpc("");
+    }
 
-        countdownText.text = "";
+    [ClientRpc]
+    private void CountdownClientRpc(string countdown)
+    {
+        countdownText.text = countdown;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ClientNetworkAnimator : NetworkAnimator
 {
+    //Client Network para que sea Non Authoritative
     protected override bool OnIsServerAuthoritative()
     {
         return false;

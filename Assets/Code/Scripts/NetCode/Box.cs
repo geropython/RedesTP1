@@ -7,9 +7,12 @@ public class Box : NetworkBehaviour
 {
     public void OnTriggerEnter(Collider other)
     {
+        //IMPORTANTE PARA EL NON AUTHORITATIVE!
         if (!IsOwner) return;
+
         var player = other.GetComponent<CarController>();
         if (player == null) return;
+        //ID player
         var playerID = player.OwnerClientId;
 
         RequestChangeColorServerRpc(playerID);

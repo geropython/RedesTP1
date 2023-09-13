@@ -2,12 +2,16 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class NetworkController : MonoBehaviour
 {
     public Button hostButton;
     public Button serverButton;
     public Button clientButton;
+
+    //LISTA DE CLIENTES PARA CONECTAR
+    private List<ulong> connectedClients = new List<ulong>();
 
     public void OnHost()
     {
@@ -35,7 +39,11 @@ public class NetworkController : MonoBehaviour
 
     private void LoadScene()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene("TestScene", LoadSceneMode.Single);
+        //COMPROBACIÓN DE SI HAY 3 O MÁS CLIENTES, ENTONCES CARGA EL JUEGO.
+        if (connectedClients.Count >= 3)
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene("TestScene", LoadSceneMode.Single);
+        }
     }
 
     private void SetInteractable(bool v)
@@ -57,11 +65,15 @@ public class NetworkController : MonoBehaviour
     private void OnClientConnectedCallback(ulong id)
     {
         print("Client connected " + id);
+
+        //AGREGA UN CLIENTE DE LA LISTA DE CLIENTS
+        connectedClients.Add(id);
+        LoadScene();
     }
 
     private void OnTransportFailure()
     {
-        print("Failure!!!");
+        print("Error de conexión!! Debe haber al menos 3 clientes conectados antes de iniciar la partida.");
         SetInteractable(true);
     }
 }

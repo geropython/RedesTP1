@@ -19,7 +19,7 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
     private Rigidbody rb;
 
     //NETWORKING
-    public new ulong OwnerClientId { get; internal set; }
+   // public new ulong OwnerClientId { get; internal set; }   --> Tira null reference ya que OwnerClientID está definida en netWorkBehaviour
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
         }
         else
         {
-            Destroy(this); //DESTROY NO VA.cuando es netowrk behaviour. poner ENABLE = FALSE
+            this.enabled = false; //FIXED
         }
     }
 
