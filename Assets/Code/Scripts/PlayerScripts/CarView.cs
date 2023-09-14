@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CarView : NetworkBehaviour //Tiene que ser NetWorkBehaviour
 {
-    //aa:
     public void UpdateCarPosition(Vector3 position)
     {
         transform.position = position;

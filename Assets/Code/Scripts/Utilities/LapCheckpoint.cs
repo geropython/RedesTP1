@@ -10,6 +10,8 @@ public class LapCheckpoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("LapCheckpoint OnTriggerEnter: Auto " + other.name + " ha entrado en el área del LapCheckpoint");
+
             // ¿Paso el auto todos los checkpoints?
             bool allCheckpointsCleared = true;
             foreach (Checkpoint checkpoint in checkpoints)
@@ -24,6 +26,8 @@ public class LapCheckpoint : MonoBehaviour
             // Si lo hizo, aumenta el contador de vueltas.
             if (allCheckpointsCleared)
             {
+                Debug.Log("LapCheckpoint: Todos los Checkpoints están despejados para el auto " + other.name);
+
                 CarController carController = other.GetComponent<CarController>();
                 if (carController != null)
                 {

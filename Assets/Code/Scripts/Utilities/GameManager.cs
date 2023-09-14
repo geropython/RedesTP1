@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,7 @@ public class GameManager : NetworkBehaviour
     public GameObject _panelWin;
     public static GameManager Instance { get; private set; }
     public ulong winningPlayerID;
-    private int laps = 0;
+    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
 
     private void Awake()
     {
@@ -22,14 +23,16 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    private void Start()
-    {
-    }
-
     public void IncreaseLap(ulong playerID)
     {
-        laps++;
-        if (laps >= 3)
+        if (!playerLaps.ContainsKey(playerID))
+        {
+            playerLaps[playerID] = 0;
+        }
+
+        playerLaps[playerID]++;
+
+        if (playerLaps[playerID] >= 3)
         {
             Win(playerID);
         }
@@ -48,37 +51,50 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void UpdateLapCountClientRpc(ulong playerID)
     {
-        // Actualiza la cantidad de vueltas restantes ( deberia ser una UI)
         Debug.Log("El jugador " + playerID + " ha completado una vuelta.");
+    }
+
+    [ClientRpc]
+    public void ShowWinPanelClientRpc()
+    {
+        _panelWin.SetActive(true);
     }
 
     public void Win(ulong playerID)
     {
+        Debug.Log("GameManager: Llamando a NotifyWinServerRpc para el jugador " + playerID);
+
+        Debug.Log("GameManager: Jugador " + playerID + " ha alcanzado 3 vueltas. Activando condición de victoria.");
         winningPlayerID = playerID;
         NotifyWinServerRpc(playerID);
+        // Mostrar el panel de victoria a todos los jugadores
+        ShowWinPanelClientRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void NotifyWinServerRpc(ulong playerID)
     {
+        Debug.Log("GameManager: Notificando victoria del jugador " + playerID + " en el servidor.");
+        Debug.Log("GameManager: NotifyWinServerRpc llamado para el jugador " + playerID);
         NotifyWinClientRpc(playerID);
     }
 
     [ClientRpc]
     public void NotifyWinClientRpc(ulong playerID)
     {
+        Debug.Log("GameManager: NotifyWinClientRpc llamado para el jugador " + playerID);
+        Debug.Log("GameManager: Notificando victoria del jugador " + playerID + " en los clientes.");
         // Notifica a todos los jugadores quien ganó (playerID)
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
-
-        // Si el jugador local es el ganador, muestra el panel de victoria
-        if (NetworkManager.Singleton.LocalClientId == playerID)
-        {
-            _panelWin.SetActive(true);
-        }
     }
 
-    public int GetLaps()
+    //UTILIZAR CON UNA UI PARA REGISTRAR VUELTAS DE CADA JUGADOR QUIZAS?¿
+    public int GetLaps(ulong playerID)
     {
-        return laps;
+        if (playerLaps.ContainsKey(playerID))
+        {
+            return playerLaps[playerID];
+        }
+        return 0;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
+public class CarController : NetworkBehaviour
 {
     //MVC
     public CarModel model;
@@ -112,7 +112,7 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
     {
         playerLaps++;
         ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
-
+        Debug.Log("CarController: Incrementando la vuelta para el jugador " + myPlayerID + ". Vueltas actuales: " + playerLaps);
         if (playerLaps >= 3)
         {
             GameManager.Instance.Win(myPlayerID);
