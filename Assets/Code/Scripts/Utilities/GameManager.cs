@@ -1,15 +1,14 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
-    //cada vez que actualizo una vuelta, se envia un RPC a todo el mundo para actualiar la cantidad de vueltas de cada auto.
     public GameObject _panelWin;
-
     public static GameManager Instance { get; private set; }
+    public ulong winningPlayerID;
     private int laps = 0;
 
-    //SINGLETON PATTERN
     private void Awake()
     {
         if (Instance == null)
@@ -23,29 +22,59 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //STARTS COUNTDOWN TIMER: --> ESPERA A LOS 3 JUGADORES PARA COMENZAR. HACER RPC
     private void Start()
     {
     }
 
-    public void IncreaseLap()
+    public void IncreaseLap(ulong playerID)
     {
         laps++;
         if (laps >= 3)
         {
-            _panelWin.SetActive(true);
+            Win(playerID);
+        }
+        else
+        {
+            UpdateLapCountServerRpc(playerID);
         }
     }
 
-    public void Win()
-    //ENVIAR ULONG A RPC DE WIN PARA DEMOSTRAR QUIEN GANO LA PARTIDA. NOTIFICAR.
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdateLapCountServerRpc(ulong playerID)
     {
-        SceneManager.LoadScene(0);
+        UpdateLapCountClientRpc(playerID);
     }
 
-    public void NextTrack()
+    [ClientRpc]
+    public void UpdateLapCountClientRpc(ulong playerID)
     {
-        //proximo nivel
+        // Actualiza la cantidad de vueltas restantes ( deberia ser una UI)
+        Debug.Log("El jugador " + playerID + " ha completado una vuelta.");
+    }
+
+    public void Win(ulong playerID)
+    {
+        winningPlayerID = playerID;
+        NotifyWinServerRpc(playerID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void NotifyWinServerRpc(ulong playerID)
+    {
+        NotifyWinClientRpc(playerID);
+    }
+
+    [ClientRpc]
+    public void NotifyWinClientRpc(ulong playerID)
+    {
+        // Notifica a todos los jugadores quien ganó (playerID)
+        Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+
+        // Si el jugador local es el ganador, muestra el panel de victoria
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            _panelWin.SetActive(true);
+        }
     }
 
     public int GetLaps()

@@ -42,7 +42,7 @@ public class NetworkController : MonoBehaviour
         //COMPROBACIÓN DE SI HAY 3 O MÁS CLIENTES, ENTONCES CARGA EL JUEGO.
         if (connectedClients.Count >= 3)
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("TestScene", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
         }
     }
 

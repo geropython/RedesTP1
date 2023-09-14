@@ -18,8 +18,8 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
     //RIGIDBODY
     private Rigidbody rb;
 
-    //NETWORKING
-   // public new ulong OwnerClientId { get; internal set; }   --> Tira null reference ya que OwnerClientID está definida en netWorkBehaviour
+    //GM
+    public int playerLaps = 0;
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
         }
         else
         {
-            this.enabled = false; //FIXED
+            this.enabled = false;
         }
     }
 
@@ -102,7 +102,24 @@ public class CarController : NetworkBehaviour  //Tiene que ser NetWorkBehaviour
 
     private void UpdateView()
     {
+        //Actualiza la vista del auto
         view.UpdateCarPosition(transform.position);
         view.UpdateCarRotation(transform.rotation);
+    }
+
+    //PARA CONTABILIZAR LAS VUELTAS EN LAP CHECKPOINT
+    public void IncreaseLap()
+    {
+        playerLaps++;
+        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
+
+        if (playerLaps >= 3)
+        {
+            GameManager.Instance.Win(myPlayerID);
+        }
+        else
+        {
+            GameManager.Instance.IncreaseLap(myPlayerID);
+        }
     }
 }
