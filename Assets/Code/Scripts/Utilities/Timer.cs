@@ -21,8 +21,12 @@ public class Timer : NetworkBehaviour
 
     public void StartTimer()
     {
-        startTime.Value = Time.time;
-        timerStarted = true;
+        if (IsServer)
+        {
+            startTime.Value = Time.time;
+            timerStarted = true;
+            StartTimerClientRpc();
+        }
     }
 
     private void Update()
@@ -36,11 +40,11 @@ public class Timer : NetworkBehaviour
 
             timerText.text = minutes + ":" + seconds;
 
-            // Si es el servidor y pasó dicho  intervalo de tiempo, envía un RPC
-            if (IsServer && Time.time >= nextRpcTime)
+            // Si es el cliente y pasó dicho intervalo de tiempo, envía un RPC
+            if (IsClient && Time.time >= nextRpcTime)
             {
                 nextRpcTime = Time.time + rpcInterval;
-                CorrectTimerServerRpc(t);
+                StartTimerClientRpc();
             }
         }
     }
@@ -48,12 +52,15 @@ public class Timer : NetworkBehaviour
     [ClientRpc]
     public void StartTimerClientRpc()
     {
-        StartTimer();
+        timerStarted = true;
+        CorrectTimerServerRpc(Time.time - startTime.Value);
     }
 
-    [ServerRpc]
+    //SI ESTO NO ESTÁ EN FALSE,TIRA NULL EN LOS CLIENTES
+    [ServerRpc(RequireOwnership = false)]
     private void CorrectTimerServerRpc(float serverTime)
     {
+        startTime.Value = Time.time - serverTime;
         CorrectTimerClientRpc(serverTime);
     }
 
@@ -61,6 +68,6 @@ public class Timer : NetworkBehaviour
     private void CorrectTimerClientRpc(float serverTime)
     {
         // Corrige el timer local con el timer del server.
-        startTime.Value = Time.time - serverTime;
+        //startTime.Value = Time.time - serverTime;
     }
 }
