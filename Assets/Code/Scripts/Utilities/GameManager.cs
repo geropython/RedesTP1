@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
     public ulong winningPlayerID;
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
+    public bool raceOver = false;
 
     private void Awake()
     {
@@ -67,8 +69,12 @@ public class GameManager : NetworkBehaviour
         Debug.Log("GameManager: Jugador " + playerID + " ha alcanzado 3 vueltas. Activando condición de victoria.");
         winningPlayerID = playerID;
         NotifyWinServerRpc(playerID);
-        // Mostrar el panel de victoria a todos los jugadores
-        ShowWinPanelClientRpc();
+
+        // En lugar de mostrar el panel de victoria, imprime un mensaje en la consola
+        Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+        // Cuando un jugador gana, establece raceOver en true
+        raceOver = true;
+        NotifyWinClientRpc(playerID);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -86,6 +92,19 @@ public class GameManager : NetworkBehaviour
         Debug.Log("GameManager: Notificando victoria del jugador " + playerID + " en los clientes.");
         // Notifica a todos los jugadores quien ganó (playerID)
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+
+        Debug.Log("Comienza corutina");
+        // Inicia la corrutina localmente en cada cliente
+        StartCoroutine(LoadWinSceneAfterDelay(2));
+    }
+
+    private IEnumerator LoadWinSceneAfterDelay(float delay)
+    {
+        // Espera el número especificado de segundos
+        yield return new WaitForSeconds(delay);
+
+        // Carga la escena de victoria
+        SceneManager.LoadScene("WinGame");
     }
 
     //UTILIZAR CON UNA UI PARA REGISTRAR VUELTAS DE CADA JUGADOR QUIZAS?¿

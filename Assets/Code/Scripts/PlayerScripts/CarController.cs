@@ -49,6 +49,9 @@ public class CarController : NetworkBehaviour
 
     private void HandleInput()
     {
+        // Si la carrera ha terminado, no permitas que los jugadores aceleren
+        if (GameManager.Instance.raceOver) return;
+
         // Acelerar
         if (Input.GetKey(KeyCode.W))
         {
