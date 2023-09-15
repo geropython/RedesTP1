@@ -9,6 +9,7 @@ public class CarController : NetworkBehaviour
     public CarModel model;
 
     public CarView view;
+    public bool canMove = false;
 
     //SPEED VARIABLES
     private float currentSpeed;
@@ -49,7 +50,7 @@ public class CarController : NetworkBehaviour
 
     private void HandleInput()
     {
-        // Si la carrera ha terminado, no permitas que los jugadores aceleren
+        //LIMITA EL MOVIMIENTO DE LOS AUTOS
         if (GameManager.Instance.raceOver) return;
 
         // Acelerar
