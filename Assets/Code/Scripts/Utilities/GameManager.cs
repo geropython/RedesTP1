@@ -72,7 +72,9 @@ public class GameManager : NetworkBehaviour
 
         // En lugar de mostrar el panel de victoria, imprime un mensaje en la consola
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+        
         // Cuando un jugador gana, establece raceOver en true
+        _panelWin.SetActive(true);
         raceOver = true;
         NotifyWinClientRpc(playerID);
     }
@@ -115,5 +117,9 @@ public class GameManager : NetworkBehaviour
             return playerLaps[playerID];
         }
         return 0;
+    }
+    public void ReturnMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

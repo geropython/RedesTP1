@@ -708,6 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelWin: {fileID: 1184219630}
   winningPlayerID: 0
+  raceOver: 0
 --- !u!4 &373371946
 Transform:
   m_ObjectHideFlags: 0
@@ -1944,7 +1945,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 373371945}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Win
+        m_MethodName: ReturnMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
