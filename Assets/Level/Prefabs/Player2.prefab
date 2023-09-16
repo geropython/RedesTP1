@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647e7c11e6dae814e9d4d5ea9e55fbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 20
   rotationSpeed: 170
   brakeSpeed: 4
   driftForce: 15

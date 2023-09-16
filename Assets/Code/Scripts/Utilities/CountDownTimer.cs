@@ -20,6 +20,7 @@ public class CountDownTimer : NetworkBehaviour
         }
     }
 
+    [System.Obsolete]
     public IEnumerator StartCountdown()
     {
         countdownText.text = "3";
@@ -37,11 +38,24 @@ public class CountDownTimer : NetworkBehaviour
 
         yield return new WaitForSeconds(1);
         CountdownClientRpc("");
+
+        // Permitir que los coches se muevan
+        AllowMovementClientRpc();
     }
 
     [ClientRpc]
     private void CountdownClientRpc(string countdown)
     {
         countdownText.text = countdown;
+    }
+
+    [ClientRpc]
+    [System.Obsolete]
+    public void AllowMovementClientRpc()
+    {
+        foreach (var carController in FindObjectsOfType<CarController>())
+        {
+            carController.canMove = true;
+        }
     }
 }

@@ -80,6 +80,7 @@ public class CarController : NetworkBehaviour
         }
 
         // Steering LEFT/RIGHT
+
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(0, -model.rotationSpeed * Time.deltaTime, 0);
@@ -100,6 +101,8 @@ public class CarController : NetworkBehaviour
 
     private void MoveCar()
     {
+        // Si canMove es falso, no muevas el coche
+        if (!canMove) return;
         // Mover coche
         transform.Translate(0, 0, currentSpeed * Time.deltaTime);
     }
