@@ -9,21 +9,15 @@ public class Timer : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private NetworkVariable<float> startTime;
     private bool timerStarted = false;
     private float nextRpcTime = 0.0f;
     private float rpcInterval = 3.0f;  // cada cuantos segundos manda los RPC´S
-
-    private void Awake()
-    {
-        startTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    }
+    private float elapsedTime = 0.0f;
 
     public void StartTimer()
     {
         if (IsServer)
         {
-            startTime.Value = Time.time;
             timerStarted = true;
             StartTimerClientRpc();
         }
@@ -33,10 +27,10 @@ public class Timer : NetworkBehaviour
     {
         if (timerStarted)
         {
-            float t = Time.time - startTime.Value;
+            elapsedTime += Time.deltaTime;
 
-            string minutes = ((int)t / 60).ToString();
-            string seconds = (t % 60).ToString("f2");
+            string minutes = ((int)elapsedTime / 60).ToString();
+            string seconds = (elapsedTime % 60).ToString("f2");
 
             timerText.text = minutes + ":" + seconds;
 
@@ -53,21 +47,21 @@ public class Timer : NetworkBehaviour
     public void StartTimerClientRpc()
     {
         timerStarted = true;
-        CorrectTimerServerRpc(Time.time - startTime.Value);
+        CorrectTimerServerRpc(Time.time - elapsedTime);
     }
 
-    //SI ESTO NO ESTÁ EN FALSE,TIRA NULL EN LOS CLIENTES
     [ServerRpc(RequireOwnership = false)]
     private void CorrectTimerServerRpc(float serverTime)
     {
-        startTime.Value = Time.time - serverTime;
         CorrectTimerClientRpc(serverTime);
     }
 
     [ClientRpc]
     private void CorrectTimerClientRpc(float serverTime)
     {
-        // Corrige el timer local con el timer del server.
-        //startTime.Value = Time.time - serverTime;
+        if (IsServer)
+        {
+            elapsedTime = Time.time - serverTime;
+        }
     }
 }

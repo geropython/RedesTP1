@@ -100,6 +100,8 @@ public class CarController : NetworkBehaviour
 
     private void MoveCar()
     {
+        // Si canMove es falso, no muevas el coche
+        if (!canMove) return;
         // Mover coche
         transform.Translate(0, 0, currentSpeed * Time.deltaTime);
     }
