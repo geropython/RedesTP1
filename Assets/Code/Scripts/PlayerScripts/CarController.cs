@@ -80,6 +80,7 @@ public class CarController : NetworkBehaviour
         }
 
         // Steering LEFT/RIGHT
+
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(0, -model.rotationSpeed * Time.deltaTime, 0);

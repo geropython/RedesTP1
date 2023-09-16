@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_ImplicitCom
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1016151393840242557, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
     - {fileID: 1006208666329676816, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
@@ -311,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647e7c11e6dae814e9d4d5ea9e55fbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15.8
+  speed: 20
   rotationSpeed: 100
   brakeSpeed: 6.5
   driftForce: 6
