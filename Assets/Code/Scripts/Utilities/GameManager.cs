@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
@@ -7,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
+    //almacenar el tiempo
+    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
     public GameObject _panelWin;
     public static GameManager Instance { get; private set; }
     public ulong winningPlayerID;
@@ -32,12 +33,15 @@ public class GameManager : NetworkBehaviour
         if (!playerLaps.ContainsKey(playerID))
         {
             playerLaps[playerID] = 0;
+            playerRaceTimes[playerID] = 0f; // Inicializa el tiempo del jugador en 0.
         }
 
         playerLaps[playerID]++;
 
         if (playerLaps[playerID] >= 3)
         {
+            // El jugador ha ganado la carrera.
+            playerRaceTimes[playerID] = Time.time - playerRaceTimes[playerID]; // Calcula el tiempo.
             Win(playerID);
         }
         else
@@ -46,7 +50,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
+        [ServerRpc(RequireOwnership = false)]
     public void UpdateLapCountServerRpc(ulong playerID)
     {
         UpdateLapCountClientRpc(playerID);
@@ -66,7 +70,8 @@ public class GameManager : NetworkBehaviour
         StopTimeClientRpc();
         NotifyWinServerRpc(playerID);
 
-        winText.text = "El jugador " + playerID + " ha ganado la carrera.";
+        float winningTime = playerRaceTimes[playerID];
+        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true);
     }
 
@@ -89,14 +94,14 @@ public class GameManager : NetworkBehaviour
     }
 
     //NO SE UTILIZA?¿
-    public int GetLaps(ulong playerID)
-    {
-        if (playerLaps.ContainsKey(playerID))
-        {
-            return playerLaps[playerID];
-        }
-        return 0;
-    }
+    //public int GetLaps(ulong playerID)
+    //{
+    //    if (playerLaps.ContainsKey(playerID))
+    //    {
+    //        return playerLaps[playerID];
+    //    }
+    //    return 0;
+    //}
 
     //para el win panel:
     public void ReturnToMenu()
