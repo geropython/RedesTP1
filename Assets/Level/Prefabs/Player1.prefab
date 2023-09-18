@@ -114,6 +114,10 @@ PrefabInstance:
       propertyPath: model
       value: 
       objectReference: {fileID: -42193504969661802}
+    - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: groundDistance
+      value: 3.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.071431
@@ -327,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647e7c11e6dae814e9d4d5ea9e55fbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 27
   rotationSpeed: 100
   brakeSpeed: 6.5
   driftForce: 6

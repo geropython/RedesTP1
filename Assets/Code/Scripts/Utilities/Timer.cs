@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+
 
 public class Timer : NetworkBehaviour
 {
@@ -11,7 +10,7 @@ public class Timer : NetworkBehaviour
 
     private bool timerStarted = false;
     private float nextRpcTime = 0.0f;
-    private float rpcInterval = 3.0f;  // cada cuantos segundos manda los RPC´S
+    private float rpcInterval = 0.0f;  // cada cuantos segundos manda los RPC´S
     private float elapsedTime = 0.0f;
 
     public void StartTimer()
@@ -44,11 +43,12 @@ public class Timer : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void StartTimerClientRpc()
-    {
-        timerStarted = true;
-        CorrectTimerServerRpc(Time.time - elapsedTime);
-    }
+public void StartTimerClientRpc()
+{
+    timerStarted = true;
+    CorrectTimerServerRpc(Time.time);
+}
+
 
     [ServerRpc(RequireOwnership = false)]
     private void CorrectTimerServerRpc(float serverTime)

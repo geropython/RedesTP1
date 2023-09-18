@@ -22,6 +22,9 @@ public class CarController : NetworkBehaviour
     //GM
     public int playerLaps = 0;
 
+    private bool isGrounded;
+    public float groundDistance;
+  
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -39,8 +42,9 @@ public class CarController : NetworkBehaviour
 
     private void Update()
     {
-        //Si YO soy el dueño del Player
-        if (!IsOwner) return;
+        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDistance);
+
+        if (!IsOwner || !isGrounded) return;
 
         HandleInput();
         UpdateSpeed();
@@ -101,7 +105,7 @@ public class CarController : NetworkBehaviour
 
     private void MoveCar()
     {
-        // Si canMove es falso, no muevas el coche
+        // Si canMove es falso, no se mueve el coche
         if (!canMove) return;
         // Mover coche
         transform.Translate(0, 0, currentSpeed * Time.deltaTime);
