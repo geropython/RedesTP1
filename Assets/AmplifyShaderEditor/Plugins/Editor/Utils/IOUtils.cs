@@ -261,8 +261,8 @@ namespace AmplifyShaderEditor
 		////////////////////////////////////////////////////////////////////////////
 		public static void SetAmplifyDefineSymbolOnBuildTargetGroup( BuildTargetGroup targetGroup )
 		{
-			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup( targetGroup );
-			if ( !currData.Contains( AmplifyShaderEditorDefineSymbol ) )
+			string currData = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
+            if (!currData.Contains(AmplifyShaderEditorDefineSymbol))
 			{
 				if ( string.IsNullOrEmpty( currData ) )
 				{
