@@ -9,7 +9,6 @@ public class ResetCheckpoint : MonoBehaviour
 
     private void Start()
     {
-        
         lastCheckpointPosition = transform.position;
         lastCheckpointRotation = transform.rotation;
 
@@ -19,14 +18,13 @@ public class ResetCheckpoint : MonoBehaviour
 
     private void HandleCheckpointCleared(Checkpoint checkpoint)
     {
-        
         lastCheckpointPosition = checkpoint.transform.position;
         lastCheckpointRotation = checkpoint.transform.rotation;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player")) //EN CLIENTE QUE SEA DUEÑO ( non autoritative)
         {
             // Mover el auto a la última posición del punto de control
             other.transform.position = lastCheckpointPosition;

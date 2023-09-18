@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class CountDownTimer : NetworkBehaviour
 {
+    //CONTEO REGRESIVO para antes de inicializar la carrera, espera a que termine la corutina y luego envía el RPC a los clientes para que puedan mover sus players.
+
     [SerializeField] private TextMeshProUGUI countdownText;
     private Timer timer;
-
 
     [System.Obsolete]
     private void Start()
@@ -52,7 +53,7 @@ public class CountDownTimer : NetworkBehaviour
 
     [ClientRpc]
     [System.Obsolete]
-    public void AllowMovementClientRpc()
+    public void AllowMovementClientRpc() //SOLAMENTE EL SERVER LE DICE QUE COMIENCE
     {
         foreach (var carController in FindObjectsOfType<CarController>())
         {

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Instantiator : NetworkBehaviour
 {
+    //CLASE INSTANTIATOR necesaria para el spawn de Network Objects (a mano) en el juego; Tiene una modificacion en donde se recorre un array de player prefabs para instanciar diferentes tipos de player en diferentes spawn points.
+
     //MODIFICADO PARA QUE SPAWNEE DIFERENTES PREFABS Y EN DIFERENTES SPAWNPOINTS.
     public NetworkObject[] playerPrefabs;
 

@@ -6,17 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
+    //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
+
     //almacenar el tiempo
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
+
     public GameObject _panelWin;
 
     //GAME MANAGER
     public static GameManager Instance { get; private set; }
+
     public ulong winningPlayerID;
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     public bool raceOver = false;
     public TextMeshProUGUI winText;
 
+    //SINGLETON PATTERN:
     private void Awake()
     {
         if (Instance == null)
@@ -48,7 +53,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-        [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     public void UpdateLapCountServerRpc(ulong playerID)
     {
         UpdateLapCountClientRpc(playerID);
@@ -96,6 +101,4 @@ public class GameManager : NetworkBehaviour
     {
         SceneManager.LoadScene(0);
     }
-
-   
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CarController : NetworkBehaviour
 {
+    //CLASE controller que tiene la logica de manejo, aceleración, y un llamado al incremento de vueltas del GM para contabilizarlas.
+
     //MVC
     public CarModel model;
 
@@ -24,13 +26,13 @@ public class CarController : NetworkBehaviour
 
     private bool isGrounded;
     public float groundDistance;
-  
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         //NETWORK BEHAVIOUR:
-        if (IsOwner) //-- > CAMERA CONTROLLER PARA SEGUIR)
+        if (IsOwner) //-- > CAMERA CONTROLLER PARA SEGUIR) --> NO QUEDO BIEN APLCIADO, VIBRACION DE AUTOS, FALTA DE TIEMPO.
         {
             model = GetComponent<CarModel>();
         }
@@ -42,10 +44,8 @@ public class CarController : NetworkBehaviour
 
     private void Update()
     {
+        if (!IsOwner || !isGrounded) return; //DESPUES- if abajo va.
         isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDistance);
-
-        if (!IsOwner || !isGrounded) return;
-
         HandleInput();
         UpdateSpeed();
         MoveCar();
