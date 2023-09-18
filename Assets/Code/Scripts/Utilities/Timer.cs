@@ -10,7 +10,7 @@ public class Timer : NetworkBehaviour
 
     private bool timerStarted = false;
     private float nextRpcTime = 0.0f;
-    private float rpcInterval = 0.0f;  // cada cuantos segundos manda los RPC´S
+    private float rpcInterval = 3.0f;  // cada cuantos segundos manda los RPC´S
     private float elapsedTime = 0.0f;
 
     public void StartTimer()
@@ -46,8 +46,9 @@ public class Timer : NetworkBehaviour
 public void StartTimerClientRpc()
 {
     timerStarted = true;
-    CorrectTimerServerRpc(Time.time);
-}
+        //ESTA LINEA IMPORTANTE PARA SINCRONIZAR CON EL HOST
+        CorrectTimerServerRpc(Time.time - elapsedTime);
+    }
 
 
     [ServerRpc(RequireOwnership = false)]
