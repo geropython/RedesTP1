@@ -32,7 +32,7 @@ public class CarController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
 
         //NETWORK BEHAVIOUR:
-        if (IsOwner) //-- > CAMERA CONTROLLER PARA SEGUIR) --> NO QUEDO BIEN APLCIADO, VIBRACION DE AUTOS, FALTA DE TIEMPO.
+        if (IsOwner)
         {
             model = GetComponent<CarModel>();
         }
@@ -44,8 +44,15 @@ public class CarController : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsOwner || !isGrounded) return; //DESPUES- if abajo va.
+        //NON AUTHORITATIVE- PRIMERO COMPRUEBA SI ES EL DUEÑO Y DESPUES EL RESTO.
+        if (!IsOwner) return;
+
         isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDistance);
+
+        if (!isGrounded) return;
+
+        if (GameManager.Instance.raceOver) return;
+
         HandleInput();
         UpdateSpeed();
         MoveCar();

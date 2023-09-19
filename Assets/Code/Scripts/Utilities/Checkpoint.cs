@@ -1,17 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Checkpoint : MonoBehaviour
+public class Checkpoint : NetworkBehaviour
 {
-    //Evento para suscribirse desde el resetCheckpoint
+    // Event to subscribe from the ResetCheckpoint
     public static event Action<Checkpoint> OnCheckpointCleared;
 
     private bool cleared = false;
 
     private void OnTriggerEnter(Collider other)
     {
+        //NON AUTHORITATIVE!!
+        if (!IsOwner) return;
+
         if (other.CompareTag("Player") && !cleared)
         {
             cleared = true;

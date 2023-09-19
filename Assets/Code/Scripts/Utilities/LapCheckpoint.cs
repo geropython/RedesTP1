@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.Netcode;
 using UnityEngine;
 
-public class LapCheckpoint : MonoBehaviour
+public class LapCheckpoint : NetworkBehaviour
 {
     public Checkpoint[] checkpoints;
 
     private void OnTriggerEnter(Collider other)
     {
+        //NON AUTHORITATIVE!
+        if (!IsOwner) return;
+
         if (other.CompareTag("Player"))
         {
             Debug.Log("LapCheckpoint OnTriggerEnter: Auto " + other.name + " ha entrado en el área del LapCheckpoint");
