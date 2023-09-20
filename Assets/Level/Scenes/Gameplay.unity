@@ -449,7 +449,6 @@ GameObject:
   - component: {fileID: 174405221}
   - component: {fileID: 174405222}
   - component: {fileID: 174405223}
-  - component: {fileID: 174405224}
   m_Layer: 0
   m_Name: Checlpoint3
   m_TagString: Untagged
@@ -505,26 +504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ec920ec94eef744bc822a1d5b2eab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &174405224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174405220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2502552069
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &206321776
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,7 +655,6 @@ GameObject:
   - component: {fileID: 251672338}
   - component: {fileID: 251672339}
   - component: {fileID: 251672340}
-  - component: {fileID: 251672341}
   m_Layer: 0
   m_Name: Checlpoint2
   m_TagString: Untagged
@@ -732,26 +710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ec920ec94eef744bc822a1d5b2eab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &251672341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251672337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 157540846
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &269314313
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,7 +871,6 @@ GameObject:
   - component: {fileID: 284702666}
   - component: {fileID: 284702665}
   - component: {fileID: 284702664}
-  - component: {fileID: 284702667}
   m_Layer: 0
   m_Name: LapsCheckpoint
   m_TagString: Finish
@@ -973,26 +930,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1317214260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &284702667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 284702663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1627102169
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &353440839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,7 +941,6 @@ GameObject:
   - component: {fileID: 353440841}
   - component: {fileID: 353440840}
   - component: {fileID: 353440842}
-  - component: {fileID: 353440843}
   m_Layer: 0
   m_Name: ResetCheckpoint
   m_TagString: Untagged
@@ -1060,26 +996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170a309bbfcc5ad42a164db2de541421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &353440843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353440839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1864607872
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &373371944
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,7 +3506,6 @@ GameObject:
   - component: {fileID: 931668747}
   - component: {fileID: 931668748}
   - component: {fileID: 931668749}
-  - component: {fileID: 931668750}
   m_Layer: 0
   m_Name: Checlpoint1
   m_TagString: Untagged
@@ -3646,26 +3561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ec920ec94eef744bc822a1d5b2eab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &931668750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931668746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2070960764
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1040542444
 GameObject:
   m_ObjectHideFlags: 0

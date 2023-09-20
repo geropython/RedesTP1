@@ -4,14 +4,14 @@ using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 
-public class LapCheckpoint : NetworkBehaviour
+public class LapCheckpoint : MonoBehaviour
 {
     public Checkpoint[] checkpoints;
 
     private void OnTriggerEnter(Collider other)
     {
-        //NON AUTHORITATIVE!
-        if (!IsOwner) return;
+        CarController carController = other.GetComponent<CarController>();   //COMPROBACION NUEVA- NON AUTHORITATIVE.
+        if (carController == null || !carController.IsOwner) return;
 
         if (other.CompareTag("Player"))
         {
@@ -33,11 +33,7 @@ public class LapCheckpoint : NetworkBehaviour
             {
                 Debug.Log("LapCheckpoint: Todos los Checkpoints están despejados para el auto " + other.name);
 
-                CarController carController = other.GetComponent<CarController>();
-                if (carController != null)
-                {
-                    carController.IncreaseLap();
-                }
+                carController.IncreaseLap();
 
                 // Resetea los checkpoints
                 foreach (Checkpoint checkpoint in checkpoints)

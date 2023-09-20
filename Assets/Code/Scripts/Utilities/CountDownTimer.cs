@@ -14,10 +14,7 @@ public class CountDownTimer : NetworkBehaviour
     private void Start()
     {
         timer = FindObjectOfType<Timer>();
-        if (IsServer)
-        {
-            StartCoroutine(StartCountdown());
-        }
+        StartCoroutine(StartCountdown());
     }
 
     [System.Obsolete]
@@ -34,9 +31,6 @@ public class CountDownTimer : NetworkBehaviour
 
         countdownText.text = "GO!";
 
-        // Start the timer on all clients
-        StartTimerClientRpc();
-
         yield return new WaitForSeconds(1);
 
         countdownText.text = "";
@@ -46,17 +40,13 @@ public class CountDownTimer : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void StartTimerClientRpc()
-    {
-        timer.StartTimer();
-    }
-
-    [ClientRpc]
     [System.Obsolete]
     public void AllowMovementClientRpc()
     {
         foreach (var carController in FindObjectsOfType<CarController>())
         {
+            // Start the timer on all clients
+            timer.StartTimer();
             carController.canMove = true;
         }
     }

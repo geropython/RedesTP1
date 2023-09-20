@@ -5,7 +5,7 @@ using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Checkpoint : NetworkBehaviour
+public class Checkpoint : MonoBehaviour
 {
     // Event to subscribe from the ResetCheckpoint
     public static event Action<Checkpoint> OnCheckpointCleared;
@@ -14,8 +14,8 @@ public class Checkpoint : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //NON AUTHORITATIVE!!
-        if (!IsOwner) return;
+        CarController carController = other.GetComponent<CarController>();//COMPROBACION NUEVA- NON AUTHORITATIVE.
+        if (carController == null || !carController.IsOwner) return;
 
         if (other.CompareTag("Player") && !cleared)
         {

@@ -4,7 +4,7 @@ using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ResetCheckpoint : NetworkBehaviour
+public class ResetCheckpoint : MonoBehaviour
 {
     private Vector3 lastCheckpointPosition;
     private Quaternion lastCheckpointRotation;
@@ -26,8 +26,8 @@ public class ResetCheckpoint : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //NON AUTHORITTATIVE
-        if (!IsOwner) return;
+        CarController carController = other.GetComponent<CarController>();  //CAMBIO NON AUTHORITATIVE.
+        if (carController == null || !carController.IsOwner) return;
 
         if (other.CompareTag("Player"))
         {
@@ -37,7 +37,7 @@ public class ResetCheckpoint : NetworkBehaviour
         }
     }
 
-    private new void OnDestroy()
+    private void OnDestroy()
     {
         // Unsubscribe from the OnCheckpointCleared event
         Checkpoint.OnCheckpointCleared -= HandleCheckpointCleared;
