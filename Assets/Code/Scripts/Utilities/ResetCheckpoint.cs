@@ -8,6 +8,7 @@ public class ResetCheckpoint : MonoBehaviour
 {
     private Vector3 lastCheckpointPosition;
     private Quaternion lastCheckpointRotation;
+    public GameObject particlePrefab;
 
     private void Start()
     {
@@ -28,12 +29,19 @@ public class ResetCheckpoint : MonoBehaviour
     {
         CarController carController = other.GetComponent<CarController>();  //CAMBIO NON AUTHORITATIVE.
         if (carController == null || !carController.IsOwner) return;
+        
 
         if (other.CompareTag("Player"))
         {
             // Move the car to the last checkpoint position
             other.transform.position = lastCheckpointPosition;
             other.transform.rotation = lastCheckpointRotation;
+            
+            //Poner particula de respawn
+            if (particlePrefab != null)
+            {
+                Instantiate(particlePrefab, other.transform.position, Quaternion.identity);
+            }
         }
     }
 

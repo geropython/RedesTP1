@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
+    public GameObject particleExpPrefab;
+
     public void OnTriggerEnter(Collider other)
     {
+        //si lo choca poner particula de explosion
+        Instantiate(particleExpPrefab, other.transform.position, Quaternion.identity);
+       
         //IMPORTANTE PARA EL NON AUTHORITATIVE!
         if (!IsOwner) return;
 
