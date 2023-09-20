@@ -9,6 +9,7 @@ public class ResetCheckpoint : MonoBehaviour
     private Vector3 lastCheckpointPosition;
     private Quaternion lastCheckpointRotation;
     public GameObject particlePrefab;
+  
 
     private void Start()
     {
@@ -27,27 +28,37 @@ public class ResetCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CarController carController = other.GetComponent<CarController>();  //CAMBIO NON AUTHORITATIVE.
+        CarController carController = other.GetComponent<CarController>(); // Cambio non authoritative
         if (carController == null || !carController.IsOwner) return;
-        
 
         if (other.CompareTag("Player"))
         {
+            // Guarda la posición actual del jugador antes de restablecerla
+            Vector3 playerPositionBeforeReset = other.transform.position;
+
             // Move the car to the last checkpoint position
             other.transform.position = lastCheckpointPosition;
             other.transform.rotation = lastCheckpointRotation;
-            
-            //Poner particula de respawn
+
+            // Calcula la posición donde se instanciará la partícula (sobre el auto)
+            Vector3 particlePosition = playerPositionBeforeReset;
+
+            // Poner partícula de respawn en la posición calculada
             if (particlePrefab != null)
             {
-                Instantiate(particlePrefab, other.transform.position, Quaternion.identity);
+                Instantiate(particlePrefab, particlePosition, Quaternion.identity);
             }
         }
+      
     }
 
     private void OnDestroy()
     {
         // Unsubscribe from the OnCheckpointCleared event
         Checkpoint.OnCheckpointCleared -= HandleCheckpointCleared;
+    }
+    public void ResetLastCheakPoint()
+    {
+        lastCheckpointRotation = transform.rotation;
     }
 }
