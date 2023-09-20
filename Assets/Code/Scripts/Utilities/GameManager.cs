@@ -7,13 +7,21 @@ using UnityEngine.SceneManagement;
 public class GameManager : NetworkBehaviour
 {
     //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
-    public GameObject particle1;
-    public GameObject particle2;
+   //texto de vueltas a la pantalla
+    public TextMeshProUGUI lapText;
+   
     //almacenar el tiempo
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-
     public GameObject _panelWin;
-
+   
+    private void Start()
+    {
+        if (IsOwner && lapText != null)
+        {
+            // Inicializar el texto de vueltas en la pantalla del jugador local
+            lapText.text = "0/3"; // Por ejemplo, comienza con 0 vueltas completadas de 3
+        }
+    }
     //GAME MANAGER
     public static GameManager Instance { get; private set; }
 
@@ -51,6 +59,18 @@ public class GameManager : NetworkBehaviour
             // El jugador ha ganado la carrera.
             playerRaceTimes[playerID] = Time.time - playerRaceTimes[playerID]; // Calcula el tiempo.
             Win(playerID);
+        }
+       
+        // Actualizar el texto de vueltas en todos los clientes utilizando RPC
+        UpdateLapTextOnClientsClientRpc(playerLaps[playerID]);
+    }
+
+    [ClientRpc]
+    private void UpdateLapTextOnClientsClientRpc(int lapCount)
+    {
+        if (lapText != null)
+        {
+            lapText.text = lapCount + "/3";
         }
     }
 
