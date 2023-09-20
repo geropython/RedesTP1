@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class CountDownTimer : NetworkBehaviour
 {
-    //CONTEO REGRESIVO para antes de inicializar la carrera, espera a que termine la corutina y luego envía el RPC a los clientes para que puedan mover sus players.
-
     [SerializeField] private TextMeshProUGUI countdownText;
     private Timer timer;
 
@@ -16,10 +14,7 @@ public class CountDownTimer : NetworkBehaviour
     private void Start()
     {
         timer = FindObjectOfType<Timer>();
-        if (IsOwner)
-        {
-            StartCoroutine(StartCountdown());
-        }
+        StartCoroutine(StartCountdown());
     }
 
     [System.Obsolete]
@@ -27,36 +22,31 @@ public class CountDownTimer : NetworkBehaviour
     {
         countdownText.text = "3";
         yield return new WaitForSeconds(1);
-        CountdownClientRpc("2");
+
+        countdownText.text = "2";
+        yield return new WaitForSeconds(1);
+
+        countdownText.text = "1";
+        yield return new WaitForSeconds(1);
+
+        countdownText.text = "GO!";
 
         yield return new WaitForSeconds(1);
-        CountdownClientRpc("1");
 
-        yield return new WaitForSeconds(1);
-        CountdownClientRpc("GO!");
+        countdownText.text = "";
 
-        // Iniciar el cronómetro en todos los clientes
-        timer.StartTimerClientRpc();
-
-        yield return new WaitForSeconds(1);
-        CountdownClientRpc("");
-
-        // Permitir que los coches se muevan
+        // Allow cars to move
         AllowMovementClientRpc();
     }
 
     [ClientRpc]
-    private void CountdownClientRpc(string countdown)
-    {
-        countdownText.text = countdown;
-    }
-
-    [ClientRpc]
     [System.Obsolete]
-    public void AllowMovementClientRpc() //SOLAMENTE EL SERVER LE DICE QUE COMIENCE
+    public void AllowMovementClientRpc()
     {
         foreach (var carController in FindObjectsOfType<CarController>())
         {
+            // Start the timer on all clients
+            timer.StartTimer();
             carController.canMove = true;
         }
     }

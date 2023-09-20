@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.Netcode;
 using UnityEngine;
 
 public class LapCheckpoint : MonoBehaviour
@@ -8,6 +10,9 @@ public class LapCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        CarController carController = other.GetComponent<CarController>();   //COMPROBACION NUEVA- NON AUTHORITATIVE.
+        if (carController == null || !carController.IsOwner) return;
+
         if (other.CompareTag("Player"))
         {
             Debug.Log("LapCheckpoint OnTriggerEnter: Auto " + other.name + " ha entrado en el área del LapCheckpoint");
@@ -28,11 +33,7 @@ public class LapCheckpoint : MonoBehaviour
             {
                 Debug.Log("LapCheckpoint: Todos los Checkpoints están despejados para el auto " + other.name);
 
-                CarController carController = other.GetComponent<CarController>();
-                if (carController != null)
-                {
-                    carController.IncreaseLap();
-                }
+                carController.IncreaseLap();
 
                 // Resetea los checkpoints
                 foreach (Checkpoint checkpoint in checkpoints)

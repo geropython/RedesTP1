@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ResetCheckpoint : MonoBehaviour
@@ -12,7 +14,7 @@ public class ResetCheckpoint : MonoBehaviour
         lastCheckpointPosition = transform.position;
         lastCheckpointRotation = transform.rotation;
 
-        // Se suscribe al evento de Checkpoint cs.
+        // Subscribe to the Checkpoint event.
         Checkpoint.OnCheckpointCleared += HandleCheckpointCleared;
     }
 
@@ -24,9 +26,12 @@ public class ResetCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) //EN CLIENTE QUE SEA DUEÑO ( non autoritative)
+        CarController carController = other.GetComponent<CarController>();  //CAMBIO NON AUTHORITATIVE.
+        if (carController == null || !carController.IsOwner) return;
+
+        if (other.CompareTag("Player"))
         {
-            // Mover el auto a la última posición del punto de control
+            // Move the car to the last checkpoint position
             other.transform.position = lastCheckpointPosition;
             other.transform.rotation = lastCheckpointRotation;
         }
@@ -34,7 +39,7 @@ public class ResetCheckpoint : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Anular la suscripción al evento OnCheckpointCleared
+        // Unsubscribe from the OnCheckpointCleared event
         Checkpoint.OnCheckpointCleared -= HandleCheckpointCleared;
     }
 }

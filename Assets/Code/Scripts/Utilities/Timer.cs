@@ -36,7 +36,7 @@ public class Timer : NetworkBehaviour
             if (IsServer && Time.time >= nextRpcTime)
             {
                 nextRpcTime = Time.time + rpcInterval;
-                StartTimerClientRpc();
+                CorrectTimerClientRpc(elapsedTime); // Cambia elapsedTime a Time.time
             }
         }
     }
@@ -45,20 +45,11 @@ public class Timer : NetworkBehaviour
     public void StartTimerClientRpc()
     {
         timerStarted = true;
-
-        //ESTA LINEA IMPORTANTE PARA SINCRONIZAR CON EL HOST
-        CorrectTimerClientRpc(Time.time - elapsedTime);
     }
-
-    //[ServerRpc(RequireOwnership = false)]
-    //private void CorrectTimerServerRpc(float serverTime)
-    //{
-    //    CorrectTimerClientRpc(serverTime);
-    //}
 
     [ClientRpc]
     private void CorrectTimerClientRpc(float serverTime)
     {
-        elapsedTime = Time.time - serverTime;
+        elapsedTime = serverTime; // Usa serverTime directamente
     }
 }
