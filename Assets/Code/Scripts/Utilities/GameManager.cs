@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : NetworkBehaviour
 {
     //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
-
+    public GameObject particle1;
+    public GameObject particle2;
     //almacenar el tiempo
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
 

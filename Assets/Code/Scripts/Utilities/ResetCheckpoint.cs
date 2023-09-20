@@ -57,8 +57,4 @@ public class ResetCheckpoint : MonoBehaviour
         // Unsubscribe from the OnCheckpointCleared event
         Checkpoint.OnCheckpointCleared -= HandleCheckpointCleared;
     }
-    public void ResetLastCheakPoint()
-    {
-        lastCheckpointRotation = transform.rotation;
-    }
 }

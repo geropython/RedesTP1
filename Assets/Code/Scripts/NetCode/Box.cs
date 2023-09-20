@@ -10,20 +10,15 @@ public class Box : NetworkBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        //si lo choca poner particula de explosion
-        Instantiate(particleExpPrefab, other.transform.position, Quaternion.identity);
-        if (other.CompareTag("Player"))
-        {
-            // Obtén una referencia al script ResetCheckpoint en el mismo GameObject o en otro objeto apropiado
-            ResetCheckpoint resetCheckpoint = GetComponent<ResetCheckpoint>();
+        // Obtiene la posición de la caja antes de desactivarla
+        Vector3 boxPosition = _box.transform.position;
 
-            // Verifica si se encontró un script ResetCheckpoint
-            if (resetCheckpoint != null)
-            {
-                // Llama a la función para restablecer el checkpoint más cercano
-                resetCheckpoint.ResetLastCheakPoint();
-            }
-        }
+        //si lo choca poner particula de explosion
+        Instantiate(particleExpPrefab, boxPosition, Quaternion.identity);
+      
+        //se desactiva la caja
+        _box.SetActive(false);
+
         //IMPORTANTE PARA EL NON AUTHORITATIVE!
         if (!IsOwner) return;
 
@@ -33,7 +28,6 @@ public class Box : NetworkBehaviour
         var playerID = player.OwnerClientId;
 
         RequestChangeColorServerRpc(playerID);
-        _box.SetActive(false);
     }
 
     [ServerRpc]
