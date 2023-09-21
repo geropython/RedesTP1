@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
-    public GameObject explosionParticle; // Referencia a la partícula de explosión
+    public GameObject explosionParticlePrefab;
 
-    public void OnTriggerEnter(Collider other)
+    [System.Obsolete]
+    private void OnTriggerEnter(Collider other)
     {
         if (!IsOwner) return;
 
@@ -19,38 +20,31 @@ public class Box : NetworkBehaviour
     }
 
     [ServerRpc]
+    [System.Obsolete]
     public void RequestExplosionServerRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
-        ClientRpcParams p = new ClientRpcParams();
-        List<ulong> list = new List<ulong>();
-        foreach (ulong id in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            if (id != playerId)
-            {
-                list.Add(id);
-            }
-        }
-        p.Send.TargetClientIds = list;
-        TriggerExplosionClientRpc(playerId, position, rotation, p);
+        TriggerExplosionClientRpc(playerId, position, rotation);
     }
 
     [ClientRpc]
-    public void TriggerExplosionClientRpc(ulong playerId, Vector3 position, Quaternion rotation, ClientRpcParams p = default)
+    [System.Obsolete]
+    public void TriggerExplosionClientRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
-        if (playerId == NetworkManager.Singleton.LocalClientId) return;
-
-        // Desactiva la caja
+        // Desactiva la caja para todos los jugadores
         gameObject.SetActive(false);
 
-        // Activa la partícula de explosión
-        explosionParticle.SetActive(true);
+        // Instancia la partícula de explosión
+        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
 
-        // Mueve el auto al último punto de control
-        CarController carController = GetComponent<CarController>();
-        if (carController != null)
+        // Mueve el auto al último punto de control solo para el jugador que colisionó
+        if (playerId == NetworkManager.Singleton.LocalClientId)
         {
-            carController.transform.position = position;
-            carController.transform.rotation = rotation;
+            CarController carController = FindObjectOfType<CarController>();
+            if (carController != null && carController.OwnerClientId == playerId)
+            {
+                carController.transform.position = position;
+                carController.transform.rotation = rotation;
+            }
         }
     }
 }
