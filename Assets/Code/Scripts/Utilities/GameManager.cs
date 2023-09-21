@@ -11,6 +11,7 @@ public class GameManager : NetworkBehaviour
     //almacenar el tiempo
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
 
+    public Dictionary<ulong, TextMeshProUGUI> playerLapTexts = new Dictionary<ulong, TextMeshProUGUI>();
     public GameObject _panelWin;
 
     //GAME MANAGER
@@ -20,6 +21,7 @@ public class GameManager : NetworkBehaviour
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     public bool raceOver = false;
     public TextMeshProUGUI winText;
+    public TextMeshProUGUI lapText;
 
     //SINGLETON PATTERN:
     private void Awake()
@@ -44,6 +46,9 @@ public class GameManager : NetworkBehaviour
         }
 
         playerLaps[playerID]++;
+
+        // Actualiza el texto de la UI
+        lapText.text = playerLaps[playerID] + "/3";
 
         if (playerLaps[playerID] >= 3)
         {

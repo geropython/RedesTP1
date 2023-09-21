@@ -24,7 +24,7 @@ public class ResetCheckpoint : MonoBehaviour
         lastCheckpointRotation = checkpoint.transform.rotation;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         CarController carController = other.GetComponent<CarController>();  //CAMBIO NON AUTHORITATIVE.
         if (carController == null || !carController.IsOwner) return;

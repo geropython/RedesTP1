@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
+    public GameObject explosionParticle; // Referencia a la partícula de explosión
+
     public void OnTriggerEnter(Collider other)
     {
-        //IMPORTANTE PARA EL NON AUTHORITATIVE!
         if (!IsOwner) return;
 
         var player = other.GetComponent<CarController>();
         if (player == null) return;
-        //ID player
         var playerID = player.OwnerClientId;
 
-        RequestChangeColorServerRpc(playerID);
+        RequestExplosionServerRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
     }
 
     [ServerRpc]
-    public void RequestChangeColorServerRpc(ulong playerId)
+    public void RequestExplosionServerRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
         ClientRpcParams p = new ClientRpcParams();
         List<ulong> list = new List<ulong>();
@@ -31,15 +31,26 @@ public class Box : NetworkBehaviour
             }
         }
         p.Send.TargetClientIds = list;
-        ChangeColorClientRpc(playerId, p);
+        TriggerExplosionClientRpc(playerId, position, rotation, p);
     }
 
     [ClientRpc]
-    public void ChangeColorClientRpc(ulong playerId, ClientRpcParams p = default)
+    public void TriggerExplosionClientRpc(ulong playerId, Vector3 position, Quaternion rotation, ClientRpcParams p = default)
     {
-        print(playerId + "  " + NetworkManager.Singleton.LocalClientId);
         if (playerId == NetworkManager.Singleton.LocalClientId) return;
-        //ChangeColor;
-        print("No es el que collisiono");
+
+        // Desactiva la caja
+        gameObject.SetActive(false);
+
+        // Activa la partícula de explosión
+        explosionParticle.SetActive(true);
+
+        // Mueve el auto al último punto de control
+        CarController carController = GetComponent<CarController>();
+        if (carController != null)
+        {
+            carController.transform.position = position;
+            carController.transform.rotation = rotation;
+        }
     }
 }

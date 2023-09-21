@@ -27,6 +27,11 @@ public class CarController : NetworkBehaviour
     private bool isGrounded;
     public float groundDistance;
 
+    //BOX:
+    public Vector3 lastCheckpointPosition;
+
+    public Quaternion lastCheckpointRotation;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
