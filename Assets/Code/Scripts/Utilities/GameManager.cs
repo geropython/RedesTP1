@@ -93,6 +93,9 @@ public class GameManager : NetworkBehaviour
     public void NotifyWinClientRpc(ulong playerID)
     {
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+        float winningTime = playerRaceTimes[playerID];
+        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
+        _panelWin.SetActive(true); // Activa el panel de victoria para todos los clientes.
     }
 
     [ClientRpc]

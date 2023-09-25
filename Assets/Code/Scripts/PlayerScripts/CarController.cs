@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class CarController : NetworkBehaviour
 {
-    //CLASE controller que tiene la logica de manejo, aceleración, y un llamado al incremento de vueltas del GM para contabilizarlas.
+    // CarModel fields
+    public float speed = 10.0f;
 
-    //MVC
-    public CarModel model;
+    public float rotationSpeed = 100.0f;
+    public float brakeSpeed = 5.0f;
+    public float driftForce = 5.0f;
 
-    public CarView view;
     public bool canMove = false;
 
     //SPEED VARIABLES
@@ -24,9 +25,6 @@ public class CarController : NetworkBehaviour
     //GM
     public int playerLaps = 0;
 
-    private bool isGrounded;
-    public float groundDistance;
-
     //BOX:
     public Vector3 lastCheckpointPosition;
 
@@ -37,24 +35,16 @@ public class CarController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
 
         //NETWORK BEHAVIOUR:
-        if (IsOwner)
-        {
-            model = GetComponent<CarModel>();
-        }
-        else
+        if (!IsOwner)
         {
             this.enabled = false;
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //NON AUTHORITATIVE- PRIMERO COMPRUEBA SI ES EL DUEÑO Y DESPUES EL RESTO.
         if (!IsOwner) return;
-
-        isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundDistance);
-
-        if (!isGrounded) return;
 
         if (GameManager.Instance.raceOver) return;
 
@@ -72,7 +62,7 @@ public class CarController : NetworkBehaviour
         // Acelerar
         if (Input.GetKey(KeyCode.W))
         {
-            targetSpeed = model.speed;
+            targetSpeed = speed;
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
@@ -82,7 +72,7 @@ public class CarController : NetworkBehaviour
         // Reversa
         if (Input.GetKey(KeyCode.S))
         {
-            targetSpeed = -model.speed;
+            targetSpeed = -speed;
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
@@ -96,23 +86,22 @@ public class CarController : NetworkBehaviour
         }
 
         // Steering LEFT/RIGHT
-
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0, -model.rotationSpeed * Time.deltaTime, 0);
-            rb.AddForce(-transform.right * model.driftForce);
+            transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
+            rb.AddForce(-transform.right * driftForce);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0, model.rotationSpeed * Time.deltaTime, 0);
-            rb.AddForce(transform.right * model.driftForce);
+            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+            rb.AddForce(transform.right * driftForce);
         }
     }
 
     private void UpdateSpeed()
     {
         // Actualizar velocidad actual
-        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, model.brakeSpeed * Time.deltaTime);
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, brakeSpeed * Time.deltaTime);
     }
 
     private void MoveCar()
@@ -126,8 +115,8 @@ public class CarController : NetworkBehaviour
     private void UpdateView()
     {
         //Actualiza la vista del auto
-        view.UpdateCarPosition(transform.position);
-        view.UpdateCarRotation(transform.rotation);
+        UpdateCarPosition(transform.position);
+        UpdateCarRotation(transform.rotation);
     }
 
     //PARA CONTABILIZAR LAS VUELTAS EN LAP CHECKPOINT
@@ -144,5 +133,16 @@ public class CarController : NetworkBehaviour
         {
             GameManager.Instance.IncreaseLap(myPlayerID);
         }
+    }
+
+    // CarView methods
+    public void UpdateCarPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
+
+    public void UpdateCarRotation(Quaternion rotation)
+    {
+        transform.rotation = rotation;
     }
 }

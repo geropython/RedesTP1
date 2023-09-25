@@ -99,9 +99,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 74196cf5d503c14488ae1ef1dbc6c9a4, type: 2}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
-      propertyPath: model
-      value: 
-      objectReference: {fileID: 1912296353710162897}
+      propertyPath: speed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: brakeSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: driftForce
+      value: 5.9
+      objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: groundDistance
       value: 3.2
@@ -156,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_Constraints
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7495443279060062592, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_Interpolate
@@ -166,7 +174,8 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2174617160108653215, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
@@ -176,9 +185,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       insertIndex: 1
       addedObject: {fileID: 6734987724163474174}
-    - targetCorrespondingSourceObject: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1912296353710162897}
     - targetCorrespondingSourceObject: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4101670106875812486}
@@ -219,22 +225,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1912296353710162897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702616251399807772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 647e7c11e6dae814e9d4d5ea9e55fbb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 27.1
-  rotationSpeed: 100
-  brakeSpeed: 3.5
-  driftForce: 10
 --- !u!114 &4101670106875812486
 MonoBehaviour:
   m_ObjectHideFlags: 0

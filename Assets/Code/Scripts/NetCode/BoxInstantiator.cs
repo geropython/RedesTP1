@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class BoxInstantiator : MonoBehaviour
+public class BoxInstantiator : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public NetworkObject boxPrefab;
+    public Transform[] boxSpawnPoints;
+
+    public void Start()
     {
-        
+        if (IsServer)
+        {
+            SpawnBoxes();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SpawnBoxes()
     {
-        
+        foreach (var spawnPoint in boxSpawnPoints)
+        {
+            var box = Instantiate(boxPrefab);
+            box.transform.position = spawnPoint.position;
+            box.transform.rotation = spawnPoint.rotation;
+            box.Spawn();
+        }
     }
 }
