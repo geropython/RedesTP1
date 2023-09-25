@@ -6,31 +6,24 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
-    //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
-   //texto de vueltas a la pantalla
-    public TextMeshProUGUI lapText;
-   
-    //almacenar el tiempo
-    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-    public GameObject _panelWin;
-   
-    private void Start()
-    {
-        if (IsOwner && lapText != null)
-        {
-            // Inicializar el texto de vueltas en la pantalla del jugador local
-            lapText.text = "0/3"; // Por ejemplo, comienza con 0 vueltas completadas de 3
-        }
-    }
-    //GAME MANAGER
+    // Variables para almacenar el estado del juego
     public static GameManager Instance { get; private set; }
 
     public ulong winningPlayerID;
-    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     public bool raceOver = false;
-    public TextMeshProUGUI winText;
 
-    //SINGLETON PATTERN:
+    // Variables para la interfaz de usuario
+    public GameObject _panelWin;
+
+    public TextMeshProUGUI winText;
+    public TextMeshProUGUI lapText;
+
+    // Variables para almacenar el progreso de los jugadores
+    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
+
+    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
+
+    // Inicializa la instancia singleton
     private void Awake()
     {
         if (Instance == null)
@@ -44,36 +37,38 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    // Llamado cuando un jugador completa una vuelta
     public void IncreaseLap(ulong playerID)
     {
+        if (raceOver) return;
+
         if (!playerLaps.ContainsKey(playerID))
         {
             playerLaps[playerID] = 0;
-            playerRaceTimes[playerID] = Time.time; // Inicializa el tiempo del jugador al comienzo de la carrera.
+            playerRaceTimes[playerID] = Time.time;
         }
 
         playerLaps[playerID]++;
+        lapText.text = playerLaps[playerID] + "/3";
 
         if (playerLaps[playerID] >= 3)
         {
-            // El jugador ha ganado la carrera.
-            playerRaceTimes[playerID] = Time.time - playerRaceTimes[playerID]; // Calcula el tiempo.
             Win(playerID);
         }
-       
-        // Actualizar el texto de vueltas en todos los clientes utilizando RPC
-        UpdateLapTextOnClientsClientRpc(playerLaps[playerID]);
     }
 
-    [ClientRpc]
-    private void UpdateLapTextOnClientsClientRpc(int lapCount)
+    // Llamado cuando un jugador gana la carrera
+    public void Win(ulong playerID)
     {
-        if (lapText != null)
-        {
-            lapText.text = lapCount + "/3";
-        }
+        //Debera hacer Server RPC y que ese server llame al CLient RPC.
+        raceOver = true;  //NETWORK VARIABLE --> SETEARLO CUANDO SE LLAME AL  SERVER RPC . YA NO DEBERA SER UN BOOLEANO
+        winningPlayerID = playerID;
+        float winningTime = Time.time - playerRaceTimes[playerID];
+        StopTimeClientRpc();  //HACER UNO SOLO.(QUE REPRODUZCA TODO)
+        NotifyWinClientRpc(playerID, winningTime);
     }
 
+    // RPCs para notificar a los clientes sobre el progreso de la carrera
     [ServerRpc(RequireOwnership = false)]
     public void UpdateLapCountServerRpc(ulong playerID)
     {
@@ -83,41 +78,27 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void UpdateLapCountClientRpc(ulong playerID)
     {
-        Debug.Log("El jugador " + playerID + " ha completado una vuelta.");
-    }
-
-    public void Win(ulong playerID)
-    {
-        winningPlayerID = playerID;
-        raceOver = true;
-        // Detiene el tiempo en el juego en todos los clientes
-        StopTimeClientRpc();
-        NotifyWinServerRpc(playerID);
-
-        float winningTime = playerRaceTimes[playerID];
-        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
-        _panelWin.SetActive(true);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void NotifyWinServerRpc(ulong playerID)
-    {
-        NotifyWinClientRpc(playerID);
+        Debug.Log("El jugador " + playerID + " completó una vuelta.");
     }
 
     [ClientRpc]
-    public void NotifyWinClientRpc(ulong playerID)
+    public void NotifyWinClientRpc(ulong playerID, float winningTime)
     {
-        Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
+        Debug.Log("El jugador " + playerID + " ganó la carrera.");
+        winText.text = "El jugador " + playerID + " ganó la carrera en " + winningTime.ToString("F2") + " segundos.";
+        if (!raceOver) return;
+
+        _panelWin.SetActive(true);
     }
 
+    //UNIFICAR EL sTOP TIME CLIENT RPC Y EL NOTIFY WIN CLIENT RPC EN UNA SOLA FUNCION, NO HACEN FALTA LOS DOS.
     [ClientRpc]
     public void StopTimeClientRpc()
     {
         Time.timeScale = 0;
     }
 
-    //para el win panel:
+    // Método para volver al menú principal
     public void ReturnToMenu()
     {
         SceneManager.LoadScene(0);

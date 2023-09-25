@@ -5,53 +5,52 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
-    public GameObject particleExpPrefab;
-    public GameObject _box;
+    public GameObject explosionParticlePrefab;
+    [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
-    public void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        // Obtiene la posición de la caja antes de desactivarla
-        Vector3 boxPosition = _box.transform.position;
+        transform.Rotate(rotationSpeed * Time.deltaTime);
+    }
 
-        //si lo choca poner particula de explosion
-        Instantiate(particleExpPrefab, boxPosition, Quaternion.identity);
-      
-        //se desactiva la caja
-        _box.SetActive(false);
-
-        //IMPORTANTE PARA EL NON AUTHORITATIVE!
-        if (!IsOwner) return;
+    [System.Obsolete]
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!IsOwner) return;    //HACE FALTA CON LA COMPROBACION DEL METODO TRIGGEReXPLOSIONcLIENTrpc?¿
 
         var player = other.GetComponent<CarController>();
         if (player == null) return;
-        //ID player
         var playerID = player.OwnerClientId;
 
-        RequestChangeColorServerRpc(playerID);
+        RequestExplosionServerRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
     }
 
     [ServerRpc]
-    public void RequestChangeColorServerRpc(ulong playerId)
+    [System.Obsolete]
+    public void RequestExplosionServerRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
-        ClientRpcParams p = new ClientRpcParams();
-        List<ulong> list = new List<ulong>();
-        foreach (ulong id in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            if (id != playerId)
-            {
-                list.Add(id);
-            }
-        }
-        p.Send.TargetClientIds = list;
-        ChangeColorClientRpc(playerId, p);
+        TriggerExplosionClientRpc(playerId, position, rotation);
     }
 
     [ClientRpc]
-    public void ChangeColorClientRpc(ulong playerId, ClientRpcParams p = default)
+    [System.Obsolete]
+    public void TriggerExplosionClientRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
-        print(playerId + "  " + NetworkManager.Singleton.LocalClientId);
-        if (playerId == NetworkManager.Singleton.LocalClientId) return;
-        //ChangeColor;
-        print("No es el que collisiono");
+        // Desactiva la caja para todos los jugadores
+        gameObject.SetActive(false);
+
+        // Instancia la partícula de explosión
+        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
+
+        // Mueve el auto al último punto de control solo para el jugador que colisionó
+        if (playerId == NetworkManager.Singleton.LocalClientId)
+        {
+            CarController carController = FindObjectOfType<CarController>();
+            if (carController != null && carController.OwnerClientId == playerId)    //PREGUNTAR SI HACE FALTA ESTA COMPROBACIÓN NON AUTHORITATIVE?¿
+            {
+                carController.transform.position = position;
+                carController.transform.rotation = rotation;
+            }
+        }
     }
 }
