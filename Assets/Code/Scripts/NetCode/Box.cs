@@ -10,7 +10,7 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner) return;
+        if (!IsOwner) return;    //HACE FALTA CON LA COMPROBACION DEL METODO TRIGGEReXPLOSIONcLIENTrpc?¿
 
         var player = other.GetComponent<CarController>();
         if (player == null) return;
@@ -40,7 +40,7 @@ public class Box : NetworkBehaviour
         if (playerId == NetworkManager.Singleton.LocalClientId)
         {
             CarController carController = FindObjectOfType<CarController>();
-            if (carController != null && carController.OwnerClientId == playerId)
+            if (carController != null && carController.OwnerClientId == playerId)    //PREGUNTAR SI HACE FALTA ESTA COMPROBACIÓN NON AUTHORITATIVE?¿
             {
                 carController.transform.position = position;
                 carController.transform.rotation = rotation;
