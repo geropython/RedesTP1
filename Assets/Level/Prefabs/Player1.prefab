@@ -112,7 +112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: speed
-      value: 24
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: brakeSpeed

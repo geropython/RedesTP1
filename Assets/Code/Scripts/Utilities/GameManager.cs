@@ -76,24 +76,14 @@ public class GameManager : NetworkBehaviour
         raceOver = true;
         // Detiene el tiempo en el juego en todos los clientes
         StopTimeClientRpc();
-        NotifyWinServerRpc(playerID);
-
         float winningTime = playerRaceTimes[playerID];
-        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
-        _panelWin.SetActive(true);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void NotifyWinServerRpc(ulong playerID)
-    {
-        NotifyWinClientRpc(playerID);
+        NotifyWinClientRpc(playerID, winningTime);
     }
 
     [ClientRpc]
-    public void NotifyWinClientRpc(ulong playerID)
+    public void NotifyWinClientRpc(ulong playerID, float winningTime)
     {
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
-        float winningTime = playerRaceTimes[playerID];
         winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true); // Activa el panel de victoria para todos los clientes.
     }
