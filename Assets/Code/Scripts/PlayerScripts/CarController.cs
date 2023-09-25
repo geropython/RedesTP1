@@ -41,7 +41,7 @@ public class CarController : NetworkBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         //NON AUTHORITATIVE- PRIMERO COMPRUEBA SI ES EL DUEÑO Y DESPUES EL RESTO.
         if (!IsOwner) return;

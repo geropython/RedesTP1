@@ -6,6 +6,12 @@ using UnityEngine;
 public class Box : NetworkBehaviour
 {
     public GameObject explosionParticlePrefab;
+    [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
+
+    private void Update()
+    {
+        transform.Rotate(rotationSpeed * Time.deltaTime);
+    }
 
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)

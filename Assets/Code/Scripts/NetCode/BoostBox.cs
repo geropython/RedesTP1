@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class BoostBox : NetworkBehaviour
 {
-    public GameObject speedParticle;
-    public float boostAmount = 2.0f; //cuanto se aumenta la velocidad
-    public float boostDuration = 2.0f; //duración del boost actual.
+    [SerializeField] private GameObject speedParticle;
+    [SerializeField] private float boostAmount = 2.0f; //cuanto se aumenta la velocidad
+    [SerializeField] private float boostDuration = 2.0f; //duración del boost actual.
+    [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
+
+    private void Update()
+    {
+        transform.Rotate(rotationSpeed * Time.deltaTime);
+    }
 
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)

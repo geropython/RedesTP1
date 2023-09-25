@@ -39,6 +39,8 @@ public class GameManager : NetworkBehaviour
 
     public void IncreaseLap(ulong playerID)
     {
+        if (raceOver) return;
+
         if (!playerLaps.ContainsKey(playerID))
         {
             playerLaps[playerID] = 0;
@@ -72,17 +74,20 @@ public class GameManager : NetworkBehaviour
 
     public void Win(ulong playerID)
     {
-        winningPlayerID = playerID;
+        //PRUEBA
+        _panelWin.SetActive(true);
         raceOver = true;
+        winningPlayerID = playerID;
         // Detiene el tiempo en el juego en todos los clientes
-        StopTimeClientRpc();
         float winningTime = playerRaceTimes[playerID];
+        StopTimeClientRpc();
         NotifyWinClientRpc(playerID, winningTime);
     }
 
     [ClientRpc]
     public void NotifyWinClientRpc(ulong playerID, float winningTime)
     {
+        if (!raceOver) return;
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
         winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true); // Activa el panel de victoria para todos los clientes.
