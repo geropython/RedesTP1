@@ -60,10 +60,11 @@ public class GameManager : NetworkBehaviour
     // Llamado cuando un jugador gana la carrera
     public void Win(ulong playerID)
     {
-        raceOver = true;
+        //Debera hacer Server RPC y que ese server llame al CLient RPC.
+        raceOver = true;  //NETWORK VARIABLE --> SETEARLO CUANDO SE LLAME AL  SERVER RPC . YA NO DEBERA SER UN BOOLEANO
         winningPlayerID = playerID;
         float winningTime = Time.time - playerRaceTimes[playerID];
-        StopTimeClientRpc();
+        StopTimeClientRpc();  //HACER UNO SOLO.(QUE REPRODUZCA TODO)
         NotifyWinClientRpc(playerID, winningTime);
     }
 
@@ -77,18 +78,20 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void UpdateLapCountClientRpc(ulong playerID)
     {
-        Debug.Log("El jugador " + playerID + " ha completado una vuelta.");
+        Debug.Log("El jugador " + playerID + " completó una vuelta.");
     }
 
     [ClientRpc]
     public void NotifyWinClientRpc(ulong playerID, float winningTime)
     {
+        Debug.Log("El jugador " + playerID + " ganó la carrera.");
+        winText.text = "El jugador " + playerID + " ganó la carrera en " + winningTime.ToString("F2") + " segundos.";
         if (!raceOver) return;
-        Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
-        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
+
         _panelWin.SetActive(true);
     }
 
+    //UNIFICAR EL sTOP TIME CLIENT RPC Y EL NOTIFY WIN CLIENT RPC EN UNA SOLA FUNCION, NO HACEN FALTA LOS DOS.
     [ClientRpc]
     public void StopTimeClientRpc()
     {

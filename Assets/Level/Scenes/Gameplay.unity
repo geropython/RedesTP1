@@ -1181,9 +1181,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f32ffa198d8d704bb2f1048c2de424a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panelWin: {fileID: 1184219630}
   winningPlayerID: 0
   raceOver: 0
+  _panelWin: {fileID: 1184219630}
   winText: {fileID: 846573268}
   lapText: {fileID: 1315758661}
 --- !u!4 &373371946
@@ -1779,6 +1779,7 @@ Transform:
   - {fileID: 1318307489}
   - {fileID: 1601448564}
   - {fileID: 1972608127}
+  - {fileID: 1678879557}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &587584639
@@ -7281,8 +7282,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678879556}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.17977, y: -31.6, z: -61.86149}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 60.594234, y: -31.510447, z: -38.71562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7294,7 +7295,7 @@ Transform:
   - {fileID: 882376004}
   - {fileID: 1584711597}
   - {fileID: 226778250}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 519982701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721169369
 GameObject:
@@ -8785,7 +8786,6 @@ SceneRoots:
   - {fileID: 373371946}
   - {fileID: 1471830364}
   - {fileID: 206321777}
-  - {fileID: 1678879557}
   - {fileID: 269314315}
   - {fileID: 440862978}
   - {fileID: 1117054657}

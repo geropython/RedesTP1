@@ -17,6 +17,7 @@ public class CarController : NetworkBehaviour
     //SPEED VARIABLES
     private float currentSpeed;
 
+    private float originalSpeed;
     private float targetSpeed;
 
     //RIGIDBODY
@@ -32,13 +33,12 @@ public class CarController : NetworkBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
-        //NETWORK BEHAVIOUR:
         if (!IsOwner)
         {
             this.enabled = false;
         }
+        rb = GetComponent<Rigidbody>();
+        originalSpeed = speed;
     }
 
     private void Update()
@@ -56,13 +56,13 @@ public class CarController : NetworkBehaviour
 
     private void HandleInput()
     {
-        //LIMITA EL MOVIMIENTO DE LOS AUTOS
+        // Limit car movement
         if (GameManager.Instance.raceOver) return;
 
-        // Acelerar
+        // Accelerate
         if (Input.GetKey(KeyCode.W))
         {
-            targetSpeed = speed;
+            targetSpeed = originalSpeed;
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
@@ -106,10 +106,12 @@ public class CarController : NetworkBehaviour
 
     private void MoveCar()
     {
-        // Si canMove es falso, no se mueve el coche
+        // If canMove is false, the car doesn't move
         if (!canMove) return;
-        // Mover coche
-        transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+
+        // Move the car using Rigidbody
+        Vector3 movement = transform.forward * currentSpeed * Time.deltaTime;
+        rb.MovePosition(rb.position + movement);
     }
 
     private void UpdateView()

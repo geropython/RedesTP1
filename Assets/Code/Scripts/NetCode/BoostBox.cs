@@ -6,8 +6,8 @@ using UnityEngine;
 public class BoostBox : NetworkBehaviour
 {
     [SerializeField] private GameObject speedParticle;
-    [SerializeField] private float boostAmount = 2.0f; //cuanto se aumenta la velocidad
-    [SerializeField] private float boostDuration = 2.0f; //duración del boost actual.
+    [SerializeField] private float boostAmount = 2.0f;
+    [SerializeField] private float boostDuration = 2.0f;
     [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
     private void Update()
@@ -38,13 +38,10 @@ public class BoostBox : NetworkBehaviour
     [System.Obsolete]
     public void TriggerBoostClientRpc(ulong playerId)
     {
-        // Desactiva la caja para todos los jugadores
-        gameObject.SetActive(false);
-
-        // Instancia la partícula de explosión
+        // Instantiate the speed particle
         Instantiate(speedParticle, transform.position, Quaternion.identity);
 
-        // Aumenta la velocidad del coche solo para el jugador que colisionó
+        // Increase the car's speed only for the player who collided
         if (playerId == NetworkManager.Singleton.LocalClientId)
         {
             CarController carController = FindObjectOfType<CarController>();
@@ -53,20 +50,30 @@ public class BoostBox : NetworkBehaviour
                 StartCoroutine(BoostSpeed(carController));
             }
         }
+
+        StartCoroutine(DeactivateBox());
+    }
+
+    private IEnumerator DeactivateBox()
+    {
+        yield return new WaitForSeconds(0.2f);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator BoostSpeed(CarController carController)
     {
-        // Guarda la velocidad original del coche
+        // Save the car's original speed
         float originalSpeed = carController.speed;
 
-        // Aumenta la velocidad del coche
+        // Increase the car's speed
         carController.speed *= boostAmount;
+        Debug.Log("Boost applied, new speed: " + carController.speed);
 
-        // Espera la duración del aumento de velocidad
+        // Wait for the boost duration
         yield return new WaitForSeconds(boostDuration);
 
-        // Restaura la velocidad original del coche
+        // Restore the car's original speed
         carController.speed = originalSpeed;
+        Debug.Log("Boost ended, original speed restored: " + carController.speed);
     }
 }
