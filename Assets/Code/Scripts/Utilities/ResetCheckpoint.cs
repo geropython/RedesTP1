@@ -9,7 +9,9 @@ public class ResetCheckpoint : MonoBehaviour
     private Vector3 lastCheckpointPosition;
     private Quaternion lastCheckpointRotation;
     public GameObject particlePrefab;
-  
+    
+ 
+    public AudioSource _risa;
 
     private void Start()
     {
@@ -39,6 +41,10 @@ public class ResetCheckpoint : MonoBehaviour
             // Move the car to the last checkpoint position
             other.transform.position = lastCheckpointPosition;
             other.transform.rotation = lastCheckpointRotation;
+           
+            //Crash Animacion risa + sonido
+            _risa.Play();
+
 
             // Calcula la posición donde se instanciará la partícula (sobre el auto)
             Vector3 particlePosition = playerPositionBeforeReset;
