@@ -46,7 +46,7 @@ public class CarController : NetworkBehaviour
         //NON AUTHORITATIVE- PRIMERO COMPRUEBA SI ES EL DUEÑO Y DESPUES EL RESTO.
         if (!IsOwner) return;
 
-        if (GameManager.Instance.raceOver.Value) return;
+        if (GameManager.Instance.raceOver) return;
 
         HandleInput();
         UpdateSpeed();
@@ -57,7 +57,7 @@ public class CarController : NetworkBehaviour
     private void HandleInput()
     {
         // Limit car movement
-        if (GameManager.Instance.raceOver.Value) return;
+        if (GameManager.Instance.raceOver) return;
 
         // Accelerate
         if (Input.GetKey(KeyCode.W))
@@ -125,9 +125,10 @@ public class CarController : NetworkBehaviour
     public void IncreaseLap()
     {
         playerLaps++;
-        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;        
+        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
         if (playerLaps >= 3)
         {
+            //ESTO ANDA BIEN?¿
             GameManager.Instance.Win(myPlayerID);
         }
         else
