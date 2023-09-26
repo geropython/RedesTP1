@@ -16,7 +16,7 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner) return;    //HACE FALTA CON LA COMPROBACION DEL METODO TRIGGEReXPLOSIONcLIENTrpc?¿
+        if (!IsOwner) return;  
 
         var player = other.GetComponent<CarController>();
         if (player == null) return;

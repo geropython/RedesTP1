@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager :NetworkBehaviour
-{
-    //VARIABLES GM:
+{// VARIABLES GM:
     public static GameManager Instance { get; private set; }
     public ulong winningPlayerID;
     public NetworkVariable<bool> raceOver = new NetworkVariable<bool>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -15,6 +14,7 @@ public class GameManager :NetworkBehaviour
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
 
+    // DICTIONARY
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
 
@@ -42,7 +42,7 @@ public class GameManager :NetworkBehaviour
         }
 
         playerLaps[playerID]++;
-        lapText.text = playerLaps[playerID] + "/3";
+        UpdateLapText(playerID);
 
         if (playerLaps[playerID] >= 3)
         {
@@ -50,10 +50,17 @@ public class GameManager :NetworkBehaviour
         }
     }
 
+    private void UpdateLapText(ulong playerID)
+    {
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            lapText.text = playerLaps[playerID] + "/3";
+        }
+    }
+
     public void Win(ulong playerID)
     {
-        Debug.Log("El jugador X ganó la partida");
-        //WinPanel();
+        WinPanel();
         WinServerRpc(playerID);
     }
 
@@ -76,26 +83,27 @@ public class GameManager :NetworkBehaviour
             return;
         }
 
-        //raceOver.Value = true;
+        raceOver.Value = true;
         winningPlayerID = playerID;
         float winningTime = Time.time - playerRaceTimes[playerID];
         NotifyWinClientRpc(playerID, winningTime);
     }
 
     [ClientRpc]
-    public void UpdateLapCountClientRpc(ulong playerID)
-    {
-        Debug.Log("El jugador " + playerID + " completó una vuelta.");
-    }
+    public void UpdateLapCountClientRpc(ulong playerID) { }
 
     [ClientRpc]
     public void NotifyWinClientRpc(ulong playerID, float winningTime)
     {
         if (!raceOver.Value) return;
-        _panelWin.SetActive(true);
-        Time.timeScale = 0;
-        Debug.Log("El jugador " + playerID + " ganó la carrera.");
-        winText.text = "El jugador " + playerID + " ganó la carrera en " + winningTime.ToString("F2") + " segundos.";
+
+        // Comprueba si el jugador local es el ganador
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            _panelWin.SetActive(true);
+            Time.timeScale = 0;
+            winText.text = "Has ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
+        }
     }
 
     public void ReturnToMenu()

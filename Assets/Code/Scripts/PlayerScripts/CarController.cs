@@ -125,8 +125,7 @@ public class CarController : NetworkBehaviour
     public void IncreaseLap()
     {
         playerLaps++;
-        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
-        Debug.Log("CarController: Incrementando la vuelta para el jugador " + myPlayerID + ". Vueltas actuales: " + playerLaps);
+        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;        
         if (playerLaps >= 3)
         {
             GameManager.Instance.Win(myPlayerID);
