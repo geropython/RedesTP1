@@ -19,7 +19,7 @@ public class GameManager : NetworkBehaviour
 
     public ulong winningPlayerID;
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
-    public bool raceOver = false;
+    public bool raceOver = false;  //HACER UNA NETWORK VARIABLE, Y LUEGO QUE HAGA UN SERVER RPC Y CLIENT RPC.
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
 
@@ -80,30 +80,23 @@ public class GameManager : NetworkBehaviour
     {
         winningPlayerID = playerID;
         raceOver = true;
-        // Detiene el tiempo en el juego en todos los clientes
-        StopTimeClientRpc();
-        NotifyWinServerRpc(playerID);
-
         float winningTime = playerRaceTimes[playerID];
         winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true);
+        NotifyWinAndStopTimeClientRpc(playerID, winningTime);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void NotifyWinServerRpc(ulong playerID)
     {
-        NotifyWinClientRpc(playerID);
+        float winningTime = playerRaceTimes[playerID];
+        NotifyWinAndStopTimeClientRpc(playerID, winningTime);
     }
 
     [ClientRpc]
-    public void NotifyWinClientRpc(ulong playerID)
+    public void NotifyWinAndStopTimeClientRpc(ulong playerID, float winningTime)
     {
         Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
-    }
-
-    [ClientRpc]
-    public void StopTimeClientRpc()
-    {
         Time.timeScale = 0;
     }
 
