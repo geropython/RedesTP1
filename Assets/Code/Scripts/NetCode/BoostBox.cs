@@ -47,7 +47,7 @@ public class BoostBox : NetworkBehaviour
             CarController carController = FindObjectOfType<CarController>();
             if (carController != null && carController.OwnerClientId == playerId)
             {
-                StartCoroutine(BoostSpeed(carController));
+                carController.ApplyBoost(boostAmount, boostDuration);
             }
         }
 
@@ -58,22 +58,5 @@ public class BoostBox : NetworkBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         gameObject.SetActive(false);
-    }
-
-    private IEnumerator BoostSpeed(CarController carController)
-    {
-        // Save the car's original speed
-        float originalSpeed = carController.speed;
-
-        // Increase the car's speed
-        carController.speed *= boostAmount;
-        Debug.Log("Boost applied, new speed: " + carController.speed);
-
-        // Wait for the boost duration
-        yield return new WaitForSeconds(boostDuration);
-
-        // Restore the car's original speed
-        carController.speed = originalSpeed;
-        Debug.Log("Boost ended, original speed restored: " + carController.speed);
     }
 }

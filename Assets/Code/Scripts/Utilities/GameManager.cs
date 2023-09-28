@@ -19,7 +19,7 @@ public class GameManager : NetworkBehaviour
 
     public ulong winningPlayerID;
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
-    public bool raceOver = false;  //HACER UNA NETWORK VARIABLE, Y LUEGO QUE HAGA UN SERVER RPC Y CLIENT RPC.
+    public bool raceOver = false;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
 
@@ -79,9 +79,9 @@ public class GameManager : NetworkBehaviour
     public void Win(ulong playerID)
     {
         winningPlayerID = playerID;
-        raceOver = true;
+        raceOver = true; //SE DEBE HACER UNA NETWORK VARIABLE. UPDATE -->  SI SE HACE, SE ROMPE LA CONDICION DE VICTORIA.
         float winningTime = playerRaceTimes[playerID];
-        winText.text = "El jugador " + playerID + " ha ganado la carrera en " + winningTime.ToString("F2") + " segundos.";
+        winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true);
         NotifyWinAndStopTimeClientRpc(playerID, winningTime);
     }
@@ -93,6 +93,7 @@ public class GameManager : NetworkBehaviour
         NotifyWinAndStopTimeClientRpc(playerID, winningTime);
     }
 
+    //SE UNIFICÓ LOS DOS rpc EN UNO SOLO:
     [ClientRpc]
     public void NotifyWinAndStopTimeClientRpc(ulong playerID, float winningTime)
     {

@@ -18,7 +18,7 @@ public class CarController : NetworkBehaviour
     private float currentSpeed;
 
     private float originalSpeed;
-    private float targetSpeed;
+    public float targetSpeed;  //DEJAR
 
     //RIGIDBODY
     private Rigidbody rb;
@@ -146,5 +146,29 @@ public class CarController : NetworkBehaviour
     public void UpdateCarRotation(Quaternion rotation)
     {
         transform.rotation = rotation;
+    }
+
+    public void ApplyBoost(float boostAmount, float boostDuration)
+    {
+        // Guarda lavelocidad orignial y la target del auto.
+        float originalSpeed = speed;
+        float originalTargetSpeed = targetSpeed;
+
+        // Incrementa las velocidades del auto
+        speed *= boostAmount;
+        targetSpeed *= boostAmount;
+
+        Debug.Log("Boost applied, current speed: " + speed);
+
+        // Espera el boosteo a que termine y luego reestablece la velocidad original del auto.
+        StartCoroutine(RestoreSpeedAfterDelay(originalSpeed, originalTargetSpeed, boostDuration));
+    }
+
+    private IEnumerator RestoreSpeedAfterDelay(float originalSpeed, float originalTargetSpeed, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        speed = originalSpeed;
+        targetSpeed = originalTargetSpeed;
     }
 }

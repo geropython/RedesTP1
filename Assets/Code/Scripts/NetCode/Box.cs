@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
+    //FUNCIONAL
     public GameObject explosionParticlePrefab;
+
     [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
     private void Update()
@@ -16,11 +18,13 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner) return;  
+        if (!IsOwner) return;
 
         var player = other.GetComponent<CarController>();
         if (player == null) return;
         var playerID = player.OwnerClientId;
+
+        Debug.Log("Player " + playerID + " collided with the box.");
 
         RequestExplosionServerRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
     }
@@ -29,6 +33,7 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     public void RequestExplosionServerRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
+        Debug.Log("Server: RequestExplosionServerRpc called for player " + playerId + " at position " + position + " with rotation " + rotation);
         TriggerExplosionClientRpc(playerId, position, rotation);
     }
 
@@ -36,6 +41,7 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     public void TriggerExplosionClientRpc(ulong playerId, Vector3 position, Quaternion rotation)
     {
+        Debug.Log("Client: TriggerExplosionClientRpc called for player " + playerId + " at position " + position + " with rotation " + rotation);
         // Desactiva la caja para todos los jugadores
         gameObject.SetActive(false);
 

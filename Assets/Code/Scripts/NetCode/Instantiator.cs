@@ -6,17 +6,25 @@ using UnityEngine;
 
 public class Instantiator : NetworkBehaviour
 {
-    //CLASE INSTANTIATOR necesaria para el spawn de Network Objects (a mano) en el juego; Tiene una modificacion en donde se recorre un array de player prefabs para instanciar diferentes tipos de player en diferentes spawn points.
-
-    //MODIFICADO PARA QUE SPAWNEE DIFERENTES PREFABS Y EN DIFERENTES SPAWNPOINTS.
     public NetworkObject[] playerPrefabs;
-
     public Transform[] spawnPoints;
 
-    public void Start()
+    private bool[] playersSpawned;
+
+    private void Start()
     {
+        InitializePlayerSpawnStatus();
         ulong id = NetworkManager.Singleton.LocalClientId;
         RequestSpawnPlayerServerRpc(id);
+    }
+
+    private void InitializePlayerSpawnStatus()
+    {
+        playersSpawned = new bool[playerPrefabs.Length];
+        for (int i = 0; i < playersSpawned.Length; i++)
+        {
+            playersSpawned[i] = false;
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -26,10 +34,24 @@ public class Instantiator : NetworkBehaviour
 
         if (playerIndex >= 0 && playerIndex < playerPrefabs.Length && playerIndex < spawnPoints.Length)
         {
-            var obj = Instantiate<NetworkObject>(playerPrefabs[playerIndex]);
-            obj.transform.position = spawnPoints[playerIndex].position;
-            obj.transform.rotation = spawnPoints[playerIndex].rotation;
-            obj.SpawnWithOwnership(id);
+            if (!playersSpawned[playerIndex])
+            {
+                var obj = Instantiate<NetworkObject>(playerPrefabs[playerIndex]);
+                obj.transform.position = spawnPoints[playerIndex].position;
+                obj.transform.rotation = spawnPoints[playerIndex].rotation;
+                obj.SpawnWithOwnership(id);
+                playersSpawned[playerIndex] = true;
+            }
+            else
+            {
+                // El jugador ya se ha instanciado, tal vez mostrar un mensaje de error.
+                Debug.LogWarning("Player already spawned.");
+            }
+        }
+        else
+        {
+            // Manejo de errores: Índices fuera de rango.
+            Debug.LogError("Invalid player index or spawn point.");
         }
     }
 }
