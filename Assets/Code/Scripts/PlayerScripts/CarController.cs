@@ -13,6 +13,7 @@ public class CarController : NetworkBehaviour
     public float driftForce = 5.0f;
 
     public bool canMove = false;
+    private bool isBoosting = false;
 
     //SPEED VARIABLES
     private float currentSpeed;
@@ -59,17 +60,16 @@ public class CarController : NetworkBehaviour
         // Limit car movement
         if (GameManager.Instance.raceOver) return;
 
-        // Accelerate
         if (Input.GetKey(KeyCode.W))
         {
-            targetSpeed = originalSpeed;
+            targetSpeed = isBoosting ? originalSpeed * 2.0f : originalSpeed;
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
             targetSpeed = 0;
         }
 
-        // Reversa
+        // Reverse
         if (Input.GetKey(KeyCode.S))
         {
             targetSpeed = -speed;
@@ -79,7 +79,7 @@ public class CarController : NetworkBehaviour
             targetSpeed = 0;
         }
 
-        // Freno de mano
+        // Handbrake
         if (Input.GetKey(KeyCode.Space))
         {
             targetSpeed = 0;
@@ -150,25 +150,21 @@ public class CarController : NetworkBehaviour
 
     public void ApplyBoost(float boostAmount, float boostDuration)
     {
-        // Guarda lavelocidad orignial y la target del auto.
-        float originalSpeed = speed;
-        float originalTargetSpeed = targetSpeed;
+        if (isBoosting) return;
 
-        // Incrementa las velocidades del auto
-        speed *= boostAmount;
-        targetSpeed *= boostAmount;
-
-        Debug.Log("Boost applied, current speed: " + speed);
-
-        // Espera el boosteo a que termine y luego reestablece la velocidad original del auto.
-        StartCoroutine(RestoreSpeedAfterDelay(originalSpeed, originalTargetSpeed, boostDuration));
+        StartCoroutine(BoostCoroutine(boostAmount, boostDuration));
     }
 
-    private IEnumerator RestoreSpeedAfterDelay(float originalSpeed, float originalTargetSpeed, float delay)
+    private IEnumerator BoostCoroutine(float boostAmount, float boostDuration)
     {
-        yield return new WaitForSeconds(delay);
+        isBoosting = true;
+
+        float originalSpeed = speed;
+        speed += boostAmount;
+
+        yield return new WaitForSeconds(boostDuration);
 
         speed = originalSpeed;
-        targetSpeed = originalTargetSpeed;
+        isBoosting = false;
     }
 }

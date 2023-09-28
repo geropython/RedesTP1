@@ -244,6 +244,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoostBox
       objectReference: {fileID: 0}
+    - target: {fileID: 5612442091675589819, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6914574253016263204, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
       propertyPath: boostAmount
       value: 2
@@ -7548,6 +7552,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoostBox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5612442091675589819, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7217459424390124061, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1172190809
@@ -7614,6 +7622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoxTrap
       objectReference: {fileID: 0}
+    - target: {fileID: 3934228577897115806, guid: 917510d38f4c799459ca4353b36a6097, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6445280078218514349, guid: 917510d38f4c799459ca4353b36a6097, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3084868321
@@ -7679,6 +7691,10 @@ PrefabInstance:
     - target: {fileID: 3934228577897115806, guid: 917510d38f4c799459ca4353b36a6097, type: 3}
       propertyPath: m_Name
       value: BoxTrap (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934228577897115806, guid: 917510d38f4c799459ca4353b36a6097, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6445280078218514349, guid: 917510d38f4c799459ca4353b36a6097, type: 3}
       propertyPath: GlobalObjectIdHash

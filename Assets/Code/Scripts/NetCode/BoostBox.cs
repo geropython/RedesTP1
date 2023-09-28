@@ -6,7 +6,7 @@ using UnityEngine;
 public class BoostBox : NetworkBehaviour
 {
     [SerializeField] private GameObject speedParticle;
-    [SerializeField] private float boostAmount = 2.0f;
+    [SerializeField] private float boostAmount = 10.0f;
     [SerializeField] private float boostDuration = 2.0f;
     [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
@@ -18,45 +18,47 @@ public class BoostBox : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner) return;
-
         var player = other.GetComponent<CarController>();
         if (player == null) return;
-        var playerID = player.OwnerClientId;
 
-        RequestBoostServerRpc(playerID);
+        ulong playerID = player.OwnerClientId;
+        OnTriggerEnterServerRpc(playerID);
     }
 
     [ServerRpc]
     [System.Obsolete]
-    public void RequestBoostServerRpc(ulong playerId)
+    private void OnTriggerEnterServerRpc(ulong playerID)
     {
-        TriggerBoostClientRpc(playerId);
+        OnTriggerEnterClientRpc(playerID);
     }
 
     [ClientRpc]
     [System.Obsolete]
-    public void TriggerBoostClientRpc(ulong playerId)
+    private void OnTriggerEnterClientRpc(ulong playerID)
     {
-        // Instantiate the speed particle
-        Instantiate(speedParticle, transform.position, Quaternion.identity);
-
-        // Increase the car's speed only for the player who collided
-        if (playerId == NetworkManager.Singleton.LocalClientId)
+        CarController player = FindPlayerById(playerID);
+        if (player != null)
         {
-            CarController carController = FindObjectOfType<CarController>();
-            if (carController != null && carController.OwnerClientId == playerId)
+            if (player.IsOwner)
             {
-                carController.ApplyBoost(boostAmount, boostDuration);
+                player.ApplyBoost(boostAmount, boostDuration);
             }
+            Instantiate(speedParticle, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
         }
-
-        StartCoroutine(DeactivateBox());
     }
 
-    private IEnumerator DeactivateBox()
+    [System.Obsolete]
+    private CarController FindPlayerById(ulong playerID)
     {
-        yield return new WaitForSeconds(0.2f);
-        gameObject.SetActive(false);
+        CarController[] players = FindObjectsOfType<CarController>();
+        foreach (CarController player in players)
+        {
+            if (player.OwnerClientId == playerID)
+            {
+                return player;
+            }
+        }
+        return null;
     }
 }
