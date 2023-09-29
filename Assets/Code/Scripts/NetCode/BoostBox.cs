@@ -22,7 +22,11 @@ public class BoostBox : NetworkBehaviour
         if (player == null) return;
 
         ulong playerID = player.OwnerClientId;
-        OnTriggerEnterServerRpc(playerID);
+
+        if (IsOwner)
+        {
+            OnTriggerEnterServerRpc(playerID);
+        }
     }
 
     [ServerRpc]
