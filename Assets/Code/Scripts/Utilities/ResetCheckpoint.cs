@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,9 +7,10 @@ public class ResetCheckpoint : MonoBehaviour
     private Vector3 lastCheckpointPosition;
     private Quaternion lastCheckpointRotation;
     public GameObject particlePrefab;
-    
- 
+
+    public CrashAnim crashAnim;
     public AudioSource _risa;
+    public NetworkObject networkObjectWithAnimator;
 
     private void Start()
     {
@@ -30,32 +29,30 @@ public class ResetCheckpoint : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        CarController carController = other.GetComponent<CarController>(); // Cambio non authoritative
+        CarController carController = other.GetComponent<CarController>();
         if (carController == null || !carController.IsOwner) return;
 
         if (other.CompareTag("Player"))
         {
-            // Guarda la posición actual del jugador antes de restablecerla
             Vector3 playerPositionBeforeReset = other.transform.position;
 
-            // Move the car to the last checkpoint position
             other.transform.position = lastCheckpointPosition;
             other.transform.rotation = lastCheckpointRotation;
-           
-            //Crash Animacion risa + sonido
+
+            if (!carController.IsOwner) return;
+
             _risa.Play();
 
-
-            // Calcula la posición donde se instanciará la partícula (sobre el auto)
             Vector3 particlePosition = playerPositionBeforeReset;
 
-            // Poner partícula de respawn en la posición calculada
             if (particlePrefab != null)
             {
                 Instantiate(particlePrefab, particlePosition, Quaternion.identity);
             }
+
+            // Llama al RPC para reproducir la animación en todos los clientes
+            crashAnim.TriggerLaughAnimationClientRpc();
         }
-      
     }
 
     private void OnDestroy()

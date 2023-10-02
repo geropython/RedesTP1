@@ -14,15 +14,15 @@ public class Box : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void RequestExplosionServerRpc()
+    private void RequestExplosionServerRpc(ulong playerID)
     {
         // Este RPC será llamado por el Host (jugador local)
         // Llama al ClientRpc para notificar a todos los clientes
-        TriggerExplosionClientRpc();
+        TriggerExplosionClientRpc(playerID);
     }
 
     [ClientRpc]
-    private void TriggerExplosionClientRpc()
+    private void TriggerExplosionClientRpc(ulong playerID)
     {
         // Este RPC será llamado en todos los clientes
         // Desactiva la caja para todos los jugadores
@@ -35,28 +35,42 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsOwner) return;
-
         var player = other.GetComponent<CarController>();
         if (player == null) return;
 
-        Debug.Log("Player " + NetworkManager.Singleton.LocalClientId + " collided with the box.");
+        ulong playerID = player.OwnerClientId;
 
-        // Restablece al jugador a su checkpoint
-        ResetPlayerToCheckpoint(player, player.lastCheckpointPosition, player.lastCheckpointRotation);
-
-        // Llama al ServerRpc para notificar a todos los clientes
-        RequestExplosionServerRpc();
+        if (IsOwner) //no autoritativo.
+        {
+            ResetPlayerToCheckpointClientRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
+            RequestExplosionServerRpc(playerID);
+        }
     }
 
-    // Método para restablecer al jugador a su checkpoint si es el propietario
-    private void ResetPlayerToCheckpoint(CarController player, Vector3 position, Quaternion rotation)
+    [ClientRpc]
+    [System.Obsolete]
+    private void ResetPlayerToCheckpointClientRpc(ulong playerID, Vector3 position, Quaternion rotation)
     {
-        if (player != null && player.IsOwner)
+        CarController player = FindPlayerById(playerID);
+        if (player != null)
         {
             // Restablece al jugador a su checkpoint
             player.transform.position = position;
             player.transform.rotation = rotation;
         }
+    }
+
+    [System.Obsolete]
+    private CarController FindPlayerById(ulong playerID)
+    {
+        CarController[] players = FindObjectsOfType<CarController>();
+        foreach (CarController player in players)
+        {
+            if (player.OwnerClientId == playerID)
+            {
+                return player;
+            }
+        }
+        return null;
     }
 }
