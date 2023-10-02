@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CarController : NetworkBehaviour
 {
+    // AHORA SE JUNTO EL VIEW Y EL MODEL EN UN SOLO SCRIPT, EL "CONTROLLER" YA QUE LOS OTROS DOS NO TENIAN UNA LOGICA MUY EXTENSA.
+
     // CarModel fields
     public float speed = 10.0f;
 
@@ -106,10 +108,8 @@ public class CarController : NetworkBehaviour
 
     private void MoveCar()
     {
-        // If canMove is false, the car doesn't move
         if (!canMove) return;
 
-        // Move the car using Rigidbody
         Vector3 movement = transform.forward * currentSpeed * Time.deltaTime;
         rb.MovePosition(rb.position + movement);
     }
@@ -128,7 +128,7 @@ public class CarController : NetworkBehaviour
         ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
         if (playerLaps >= 3)
         {
-            //ESTO ANDA BIEN?¿
+            //ESTO ANDA BIEN
             GameManager.Instance.Win(myPlayerID);
         }
         else

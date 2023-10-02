@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
+    //BOX QUE FUNCIONA COMO TRAMPA, YA QUE REESTABLECE LA VEHICULO AL ULTIMO CHECKPOINT(RESETCHECKPOINT) Y ADEMAS INTERFIERE LA VISTA CON UNA GRAN EXPLOSION.
+
     public GameObject explosionParticlePrefab;
     [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
@@ -16,7 +18,7 @@ public class Box : NetworkBehaviour
     [ServerRpc]
     private void RequestExplosionServerRpc(ulong playerID)
     {
-        // Este RPC será llamado por el Host (jugador local)
+        // Este RPC será llamado por el Host
         // Llama al ClientRpc para notificar a todos los clientes
         TriggerExplosionClientRpc(playerID);
     }

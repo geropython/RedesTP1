@@ -1,10 +1,12 @@
-
 using Unity.Netcode;
 using UnityEngine;
 
 public class ResetCheckpoint : MonoBehaviour
 {
+    //SE ENCARGA DE REESTABLECER EL VEHICULO QUE HAYA CAIDO AL VACIO O HAYA AGARRADO UNA BOX TRAP A SU ULTIMO PUNTO DE CONTROL.
+
     private Vector3 lastCheckpointPosition;
+
     private Quaternion lastCheckpointRotation;
     public GameObject particlePrefab;
 
@@ -17,7 +19,6 @@ public class ResetCheckpoint : MonoBehaviour
         lastCheckpointPosition = transform.position;
         lastCheckpointRotation = transform.rotation;
 
-        // Subscribe to the Checkpoint event.
         Checkpoint.OnCheckpointCleared += HandleCheckpointCleared;
     }
 
@@ -50,16 +51,13 @@ public class ResetCheckpoint : MonoBehaviour
                 Instantiate(particlePrefab, particlePosition, Quaternion.identity);
             }
 
-
             // Llama al ServerRpc en la clase CrashAnim
             crashAnim.TriggerLaughAnimationServerRpc();
         }
     }
 
-
     private void OnDestroy()
     {
-        // Unsubscribe from the OnCheckpointCleared event
         Checkpoint.OnCheckpointCleared -= HandleCheckpointCleared;
     }
 }
