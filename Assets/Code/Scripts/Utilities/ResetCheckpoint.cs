@@ -50,10 +50,12 @@ public class ResetCheckpoint : MonoBehaviour
                 Instantiate(particlePrefab, particlePosition, Quaternion.identity);
             }
 
-            // Llama al RPC para reproducir la animación en todos los clientes
-            crashAnim.TriggerLaughAnimationClientRpc();
+
+            // Llama al ServerRpc en la clase CrashAnim
+            crashAnim.TriggerLaughAnimationServerRpc();
         }
     }
+
 
     private void OnDestroy()
     {

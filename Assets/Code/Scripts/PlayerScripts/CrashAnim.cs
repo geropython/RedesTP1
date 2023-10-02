@@ -13,4 +13,10 @@ public class CrashAnim : NetworkBehaviour
         _anim.SetTrigger("Laugh");
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void TriggerLaughAnimationServerRpc()
+    {
+        TriggerLaughAnimationClientRpc();
+    }
 }
+
