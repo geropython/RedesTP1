@@ -9,6 +9,8 @@ public class GameManager : NetworkBehaviour
 {
     //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
 
+    //CAMBIOS--> Generales, se optimizó un poco el script, pero además la condicion de victoria, junto con la logica de conteo de vueltas por UI para todos los jugadores ynotificacion de victoria.
+
     //almacenar el tiempo
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
 
@@ -79,7 +81,7 @@ public class GameManager : NetworkBehaviour
     public void Win(ulong playerID)
     {
         winningPlayerID = playerID;
-        raceOver = true; //SE DEBE HACER UNA NETWORK VARIABLE. UPDATE -->  SI SE HACE, SE ROMPE LA CONDICION DE VICTORIA.
+        raceOver = true; //SE DEBE HACER UNA NETWORK VARIABLE. UPDATE --> NEW: SI SE HACE, SE ROMPE LA CONDICION DE VICTORIA.
         float winningTime = playerRaceTimes[playerID];
         winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + winningTime.ToString("F2") + " segundos.";
         _panelWin.SetActive(true);

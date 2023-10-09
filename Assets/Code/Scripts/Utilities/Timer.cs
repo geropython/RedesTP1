@@ -5,6 +5,7 @@ using UnityEngine;
 public class Timer : NetworkBehaviour
 {
     //TIMER que manda una señal de sincronizacion cada X segundos para que actualice tanto en el host como en los clientes.
+    //CAMBIOS --> Se optimizó la cantidad de RPC´S del script, dejando solo el  Start client y el CorrectTimer
     [SerializeField] private TextMeshProUGUI timerText;
 
     private bool timerStarted = false;

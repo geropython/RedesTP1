@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CrashAnim : NetworkBehaviour
 {
+    //UTILIZA CLIENTNETWORK ANIMATOR PAR QUE SEA NON AUTHORITATIVE.
     public ClientNetworkAnimator _anim;
 
     [ClientRpc]
@@ -19,4 +20,3 @@ public class CrashAnim : NetworkBehaviour
         TriggerLaughAnimationClientRpc();
     }
 }
-

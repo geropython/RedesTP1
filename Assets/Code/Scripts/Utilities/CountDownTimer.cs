@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class CountDownTimer : NetworkBehaviour
 {
+    //CAMBIOS en el RPC: Ahora se llama al StartTimer dentro del mismo y se corrigió para que siga un Non authoritative.
+
     [SerializeField] private TextMeshProUGUI countdownText;
     private Timer timer;
 

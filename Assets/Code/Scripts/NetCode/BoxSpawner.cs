@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class BoxSpawner : NetworkBehaviour
 {
+    //SCRIPT de prueba pero no lo aplicamos propiamente en el juego, nos rompe la arquitectura.
+
     public GameObject boxPrefab;
     public Transform[] spawnPoints;
     public float respawnTime = 5.0f;
