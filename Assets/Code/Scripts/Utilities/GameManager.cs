@@ -49,7 +49,7 @@ public class GameManager : NetworkBehaviour
             float finishTime = Time.time;
             int finishPosition = GetPlayerPosition(playerID);
 
-            // Llama al método para finalizar la carrera y despawnear
+            // Llama a la función en el carController para finalizar la carrera y despawnear
             carController.FinishRaceAndDespawn(finishTime, finishPosition);
         }
     }
@@ -70,16 +70,6 @@ public class GameManager : NetworkBehaviour
 
         // Llama al RPC del cliente para mostrar el panel de victoria
         ShowWinPanelClientRpc(playerID, time, position);
-
-        // Actualiza las posiciones de los jugadores
-        Dictionary<ulong, int> playerPositions = new Dictionary<ulong, int>();
-        foreach (var player in playerProgress)
-        {
-            playerPositions[player] = GetPlayerPosition(player);
-        }
-
-        // Envía las posiciones actualizadas a todos los clientes
-        UpdatePlayerPositionsServerRpc(playerPositions);
     }
 
     [ClientRpc]
@@ -89,20 +79,6 @@ public class GameManager : NetworkBehaviour
         {
             ShowWinPanel(playerID, time, position);
         }
-    }
-
-    [ServerRpc]
-    private void UpdatePlayerPositionsServerRpc(Dictionary<ulong, int> playerPositions)
-    {
-        // Envía las posiciones actualizadas a todos los clientes
-        UpdatePlayerPositionsClientRpc(playerPositions);
-    }
-
-    [ClientRpc]
-    private void UpdatePlayerPositionsClientRpc(Dictionary<ulong, int> playerPositions)
-    {
-        // Actualiza las posiciones de los jugadores en los clientes
-        // Puedes usar esta información para mostrar las posiciones de todos los jugadores
     }
 
     public void ShowWinPanel(ulong playerID, float time, int position)
