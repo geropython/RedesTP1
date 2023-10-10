@@ -20,14 +20,14 @@ public class BoostBox : NetworkBehaviour
     [System.Obsolete]
     private void OnTriggerEnter(Collider other)
     {
-        var player = other.GetComponent<CarController>();
-        if (player == null) return;
-
-        ulong playerID = player.OwnerClientId;
-
         if (IsOwner)
         {
-            OnTriggerEnterServerRpc(playerID);
+            var player = other.GetComponent<CarController>();
+            if (player == null) return;
+
+            ulong playerID = player.OwnerClientId;
+
+            OnTriggerEnterClientRpc(playerID);  //no haria falta hacer el server rpc sino el client rpc
         }
     }
 
@@ -50,7 +50,9 @@ public class BoostBox : NetworkBehaviour
                 player.ApplyBoost(boostAmount, boostDuration);
             }
             Instantiate(speedParticle, transform.position, Quaternion.identity);
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); //no va
+            //UTILIZAR CALLBACK DEL DESPAWN PARA INSTANCIAR LAS PARTICULAS. EL DESPAWN SE LLAMA. ENVIAR UN RPC A EL CLIENTE ESPECIFICO PARA QUE APLIQUE EL BOOST. UNA VEZ APLICADO, HACER UN SERVER RPC, ESE SERVER RPC HACE EL DESPAWN Y EN EL CALLBACK HACE LA INSTANCIACIO NDE PARTICULAS.
+            //DURANTE ESE PERIODO, NADIE MAS DEBE COLISIONAR CON LA CAJA --> SETACTIVE = FALSE POR EJEMPLO.
         }
     }
 

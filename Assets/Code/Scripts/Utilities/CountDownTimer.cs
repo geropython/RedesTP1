@@ -39,6 +39,9 @@ public class CountDownTimer : NetworkBehaviour
 
         // Allow cars to move
         AllowMovementClientRpc();
+        //ME PREGUNTO SI SOY EL SERVER, Y SI LO SOY HAGO EL STARTIMER
+        if (IsServer)
+            timer.StartTimer();
     }
 
     [ClientRpc]
@@ -48,8 +51,14 @@ public class CountDownTimer : NetworkBehaviour
         foreach (var carController in FindObjectsOfType<CarController>())
         {
             // Start the timer on all clients
-            timer.StartTimer();
-            carController.canMove = true;
+            // timer.StartTimer();
+
+            //SOY EL DUEÑO - IS OWNER?
+            if (carController.IsOwner)
+            {
+                carController.canMove = true;
+                break;
+            }
         }
     }
 }

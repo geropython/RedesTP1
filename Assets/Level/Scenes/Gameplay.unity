@@ -244,18 +244,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoostBox
       objectReference: {fileID: 0}
-    - target: {fileID: 5612442091675589819, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6914574253016263204, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
-      propertyPath: boostAmount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6914574253016263204, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
-      propertyPath: boostDuration
-      value: 2.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7217459424390124061, guid: f87855efffa1d9340b39803cb6fa9465, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2966316074

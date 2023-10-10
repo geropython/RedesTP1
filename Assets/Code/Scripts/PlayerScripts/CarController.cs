@@ -60,7 +60,7 @@ public class CarController : NetworkBehaviour
     private void HandleInput()
     {
         // Limit car movement
-        if (GameManager.Instance.raceOver) return;
+        if (GameManager.Instance.raceOver) return; //HACER EL DESPAWN- QUIZAS ESTA DEMAS
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -126,7 +126,7 @@ public class CarController : NetworkBehaviour
     {
         playerLaps++;
         ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
-        if (playerLaps >= 3)
+        if (playerLaps >= 3)  //HACER RPC Al servidor para decirle en que tiempo finalicé y así comprobar en que posicion salí.Ademas un Server RPC para eliminar al auto (despawn en true)
         {
             //ESTO ANDA BIEN
             GameManager.Instance.Win(myPlayerID);
