@@ -7,25 +7,19 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
-    //CLASE GAME MANAGER que administra distintas funcionalidades del juego, condiciones de victoria, conteo de vueltas, pausa, notificacion con RPC a los clientes para saber quien ganó y en qué tiempos.
-
-    //CAMBIOS--> Generales, se optimizó un poco el script, pero además la condicion de victoria, junto con la logica de conteo de vueltas por UI para todos los jugadores ynotificacion de victoria.
-
-    //almacenar el tiempo
-    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-
     public GameObject _panelWin;
-
-    //GAME MANAGER
-    public static GameManager Instance { get; private set; }
-
-    public ulong winningPlayerID;
-    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
-    public bool raceOver = false;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
+    public TextMeshProUGUI finishPositionText;
 
-    //SINGLETON PATTERN:
+    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
+    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
+    private List<ulong> playerProgress = new List<ulong>();
+
+    public static GameManager Instance { get; private set; }
+    public bool raceOver = false;
+    public ulong winningPlayerID;
+
     private void Awake()
     {
         if (Instance == null)
@@ -39,26 +33,28 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    public void IncreaseLap(ulong playerID)
+    public void IncreaseLap(ulong playerID, CarController carController)
     {
         if (!playerLaps.ContainsKey(playerID))
         {
             playerLaps[playerID] = 0;
-            playerRaceTimes[playerID] = Time.time; // Inicializa el tiempo del jugador al comienzo de la carrera.
+            playerRaceTimes[playerID] = Time.time;
         }
 
         playerLaps[playerID]++;
-        UpdateLapText(playerID);  // Actualiza el texto de las vueltas.
+        UpdateLapText(playerID);
 
         if (playerLaps[playerID] >= 3)
         {
-            // El jugador ha ganado la carrera.
-            playerRaceTimes[playerID] = Time.time - playerRaceTimes[playerID]; // Calcula el tiempo.
-            Win(playerID);
+            float finishTime = Time.time;
+            int finishPosition = GetPlayerPosition(playerID);
+
+            // Llama al método para finalizar la carrera y despawnear
+            carController.FinishRaceAndDespawn(finishTime, finishPosition);
         }
     }
 
-    private void UpdateLapText(ulong playerID)
+    public void UpdateLapText(ulong playerID)
     {
         if (NetworkManager.Singleton.LocalClientId == playerID)
         {
@@ -67,43 +63,75 @@ public class GameManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void UpdateLapCountServerRpc(ulong playerID)
-    {
-        UpdateLapCountClientRpc(playerID);
-    }
-
-    [ClientRpc]
-    public void UpdateLapCountClientRpc(ulong playerID)
-    {
-        Debug.Log("El jugador " + playerID + " ha completado una vuelta.");
-    }
-
-    public void Win(ulong playerID)
+    public void FinishRaceServerRpc(ulong playerID, float time, int position)
     {
         winningPlayerID = playerID;
-        raceOver = true; //SE DEBE HACER UNA NETWORK VARIABLE. UPDATE --> NEW: SI SE HACE, SE ROMPE LA CONDICION DE VICTORIA.
-        float winningTime = playerRaceTimes[playerID];
-        winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + winningTime.ToString("F2") + " segundos.";
-        _panelWin.SetActive(true);
-        NotifyWinAndStopTimeClientRpc(playerID, winningTime);
+        raceOver = true;
+
+        // Llama al RPC del cliente para mostrar el panel de victoria
+        ShowWinPanelClientRpc(playerID, time, position);
+
+        // Actualiza las posiciones de los jugadores
+        Dictionary<ulong, int> playerPositions = new Dictionary<ulong, int>();
+        foreach (var player in playerProgress)
+        {
+            playerPositions[player] = GetPlayerPosition(player);
+        }
+
+        // Envía las posiciones actualizadas a todos los clientes
+        UpdatePlayerPositionsServerRpc(playerPositions);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void NotifyWinServerRpc(ulong playerID)
-    {
-        float winningTime = playerRaceTimes[playerID];
-        NotifyWinAndStopTimeClientRpc(playerID, winningTime);
-    }
-
-    //SE UNIFICÓ LOS DOS rpc EN UNO SOLO:
     [ClientRpc]
-    public void NotifyWinAndStopTimeClientRpc(ulong playerID, float winningTime)
+    public void ShowWinPanelClientRpc(ulong playerID, float time, int position)
     {
-        Debug.Log("El jugador " + playerID + " ha ganado la carrera.");
-        Time.timeScale = 0;
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            ShowWinPanel(playerID, time, position);
+        }
     }
 
-    //para el win panel:
+    [ServerRpc]
+    private void UpdatePlayerPositionsServerRpc(Dictionary<ulong, int> playerPositions)
+    {
+        // Envía las posiciones actualizadas a todos los clientes
+        UpdatePlayerPositionsClientRpc(playerPositions);
+    }
+
+    [ClientRpc]
+    private void UpdatePlayerPositionsClientRpc(Dictionary<ulong, int> playerPositions)
+    {
+        // Actualiza las posiciones de los jugadores en los clientes
+        // Puedes usar esta información para mostrar las posiciones de todos los jugadores
+    }
+
+    public void ShowWinPanel(ulong playerID, float time, int position)
+    {
+        _panelWin.SetActive(true);
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            winText.text = "Has finalizado la carrera en " + time.ToString("F2") + " segundos.";
+            finishPositionText.text = "Posición: " + position;
+        }
+        else
+        {
+            winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + time.ToString("F2") + " segundos.";
+            finishPositionText.text = "";
+        }
+    }
+
+    public int GetPlayerPosition(ulong playerID)
+    {
+        if (!playerProgress.Contains(playerID))
+        {
+            playerProgress.Add(playerID);
+        }
+
+        playerProgress.Sort((playerID1, playerID2) => playerLaps[playerID2].CompareTo(playerLaps[playerID1]));
+
+        return playerProgress.IndexOf(playerID) + 1;
+    }
+
     public void ReturnToMenu()
     {
         SceneManager.LoadScene(0);

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class CarController : NetworkBehaviour
 {
-    //CAMBIOS: AHORA SE JUNTO EL VIEW Y EL MODEL EN UN SOLO SCRIPT, EL "CONTROLLER", YA QUE LOS OTROS DOS NO TENIAN UNA LOGICA MUY EXTENSA.
-
     // CarModel fields
     public float speed = 10.0f;
 
@@ -29,6 +27,12 @@ public class CarController : NetworkBehaviour
     //GM
     public int playerLaps = 0;
 
+    private GameManager gameManager;
+
+    public float finishTime;
+    public NetworkObject networkObject;
+    public int finishPosition;
+
     //BOX:
     public Vector3 lastCheckpointPosition;
 
@@ -41,12 +45,13 @@ public class CarController : NetworkBehaviour
             this.enabled = false;
         }
         rb = GetComponent<Rigidbody>();
+        networkObject = GetComponent<NetworkObject>();
         originalSpeed = speed;
+        gameManager = GameManager.Instance;
     }
 
     private void Update()
     {
-        //NON AUTHORITATIVE- PRIMERO COMPRUEBA SI ES EL DUEÑO Y DESPUES EL RESTO.
         if (!IsOwner) return;
 
         if (GameManager.Instance.raceOver) return;
@@ -59,8 +64,11 @@ public class CarController : NetworkBehaviour
 
     private void HandleInput()
     {
-        // Limit car movement
-        if (GameManager.Instance.raceOver) return; //HACER EL DESPAWN- QUIZAS ESTA DEMAS
+        // Verifica si la carrera ha terminado antes de procesar la entrada
+        if (GameManager.Instance.raceOver)
+        {
+            return;
+        }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -121,20 +129,32 @@ public class CarController : NetworkBehaviour
         UpdateCarRotation(transform.rotation);
     }
 
-    //PARA CONTABILIZAR LAS VUELTAS EN LAP CHECKPOINT
-    public void IncreaseLap()
+    // PARA DESACTIVAR AL AUTO AL GANAR
+    [ServerRpc]
+    public void DespawnCarServerRpc()
     {
-        playerLaps++;
-        ulong myPlayerID = GetComponent<NetworkObject>().OwnerClientId;
-        if (playerLaps >= 3)  //HACER RPC Al servidor para decirle en que tiempo finalicé y así comprobar en que posicion salí.Ademas un Server RPC para eliminar al auto (despawn en true)
-        {
-            //ESTO ANDA BIEN
-            GameManager.Instance.Win(myPlayerID);
-        }
-        else
-        {
-            GameManager.Instance.IncreaseLap(myPlayerID);
-        }
+        networkObject.Despawn();
+    }
+
+    //HACER RPC Al servidor para decirle en que tiempo finalicé y así comprobar en que posicion salí.Ademas un Server RPC para eliminar al auto (despawn en true).
+
+    public void FinishRaceAndDespawn(float finishTime, int finishPosition)
+    {
+        // Muestra el panel con la posición y el tiempo
+        GameManager.Instance.ShowWinPanel(networkObject.OwnerClientId, finishTime, finishPosition);
+
+        // Envía el mensaje RPC para finalizar la carrera y despawnear el auto
+        GameManager.Instance.FinishRaceServerRpc(networkObject.OwnerClientId, finishTime, finishPosition);
+        // Inicia la corutina para despawnear el auto después de un retraso
+        StartCoroutine(DespawnCar());
+    }
+
+    //CORUTINA PARA DELAY BREVE ANTES DE QUE EL AUTO DESPAWNEE Y ASI PODER VER EL PANEL.
+    public IEnumerator DespawnCar()
+    {
+        yield return new WaitForSeconds(3);
+
+        DespawnCarServerRpc();
     }
 
     // CarView methods

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BoostBox : NetworkBehaviour
 {
-    //BOX QUE SIRVE COMO POWER UP DE VELOCIDAD, AUMENTANDO LA MISMA SPEED DEL VEHICULO QUE LA COLISIONA POR UN BREVE TIEMPO.
-
     [SerializeField] private GameObject speedParticle;
     [SerializeField] private float boostAmount = 10.0f;
     [SerializeField] private float boostDuration = 2.0f;

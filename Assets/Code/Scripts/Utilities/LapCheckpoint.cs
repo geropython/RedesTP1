@@ -10,7 +10,7 @@ public class LapCheckpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CarController carController = other.GetComponent<CarController>();   //COMPROBACION NUEVA- NON AUTHORITATIVE.
+        CarController carController = other.GetComponent<CarController>();
         if (carController == null || !carController.IsOwner) return;
 
         if (other.CompareTag("Player"))
@@ -31,9 +31,8 @@ public class LapCheckpoint : MonoBehaviour
             // Si lo hizo, aumenta el contador de vueltas.
             if (allCheckpointsCleared)
             {
+                GameManager.Instance.IncreaseLap(carController.networkObject.OwnerClientId, carController);
                 Debug.Log("LapCheckpoint: Todos los Checkpoints están despejados para el auto " + other.name);
-
-                carController.IncreaseLap();
 
                 // Resetea los checkpoints
                 foreach (Checkpoint checkpoint in checkpoints)
