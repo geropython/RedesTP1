@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Unity.Netcode;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -21,6 +17,7 @@ public class Checkpoint : MonoBehaviour
         {
             cleared = true;
             OnCheckpointCleared?.Invoke(this);
+            // Imprime un mensaje en la consola cada vez que un jugador pasa por un punto de control
         }
     }
 
@@ -34,3 +31,4 @@ public class Checkpoint : MonoBehaviour
         cleared = false;
     }
 }
+

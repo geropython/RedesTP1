@@ -123,6 +123,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: networkObject
+      value: 
+      objectReference: {fileID: 7326192738736499373}
+    - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: rotationSpeed
       value: 98
       objectReference: {fileID: 0}

@@ -111,6 +111,10 @@ PrefabInstance:
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: networkObject
+      value: 
+      objectReference: {fileID: -7059309032281314557}
+    - target: {fileID: 2759385456783991687, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: groundDistance
       value: 3.2
       objectReference: {fileID: 0}

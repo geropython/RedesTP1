@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Unity.Netcode;
 using UnityEngine;
 
 public class LapCheckpoint : MonoBehaviour
@@ -15,8 +11,6 @@ public class LapCheckpoint : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("LapCheckpoint OnTriggerEnter: Auto " + other.name + " ha entrado en el área del LapCheckpoint");
-
             // ¿Paso el auto todos los checkpoints?
             bool allCheckpointsCleared = true;
             foreach (Checkpoint checkpoint in checkpoints)
@@ -32,7 +26,6 @@ public class LapCheckpoint : MonoBehaviour
             if (allCheckpointsCleared)
             {
                 GameManager.Instance.IncreaseLap(carController.networkObject.OwnerClientId, carController);
-                Debug.Log("LapCheckpoint: Todos los Checkpoints están despejados para el auto " + other.name);
 
                 // Resetea los checkpoints
                 foreach (Checkpoint checkpoint in checkpoints)

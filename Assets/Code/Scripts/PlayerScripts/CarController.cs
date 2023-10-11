@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -32,6 +32,7 @@ public class CarController : NetworkBehaviour
     public float finishTime;
     public NetworkObject networkObject;
     public int finishPosition;
+
 
     //BOX:
     public Vector3 lastCheckpointPosition;
@@ -114,6 +115,8 @@ public class CarController : NetworkBehaviour
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, brakeSpeed * Time.deltaTime);
     }
 
+   
+
     private void MoveCar()
     {
         if (!canMove) return;
@@ -140,11 +143,12 @@ public class CarController : NetworkBehaviour
 
     public void FinishRaceAndDespawn(float finishTime, int finishPosition)
     {
+        // Envía el mensaje RPC para finalizar la carrera y despawnear el auto
+        GameManager.Instance.FinishRaceServerRpc(networkObject.OwnerClientId, finishTime, finishPosition);
+
         // Muestra el panel con la posición y el tiempo
         GameManager.Instance.ShowWinPanel(networkObject.OwnerClientId, finishTime, finishPosition);
 
-        // Envía el mensaje RPC para finalizar la carrera y despawnear el auto
-        GameManager.Instance.FinishRaceServerRpc(networkObject.OwnerClientId, finishTime, finishPosition);
         // Inicia la corutina para despawnear el auto después de un retraso
         StartCoroutine(DespawnCar());
     }

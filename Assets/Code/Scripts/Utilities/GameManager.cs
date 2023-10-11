@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class GameManager : NetworkBehaviour
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
     private List<ulong> playerProgress = new List<ulong>();
-
+    private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
     public static GameManager Instance { get; private set; }
     public bool raceOver = false;
     public ulong winningPlayerID;
@@ -46,6 +46,12 @@ public class GameManager : NetworkBehaviour
 
         if (playerLaps[playerID] >= 3)
         {
+            // Solo añade al jugador a la lista de jugadores terminados si no está ya en la lista
+            if (!finishedPlayers.ContainsKey(playerID))
+            {
+                finishedPlayers.Add(playerID, Time.time);
+            }
+
             float finishTime = Time.time;
             int finishPosition = GetPlayerPosition(playerID);
 
@@ -75,38 +81,44 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void ShowWinPanelClientRpc(ulong playerID, float time, int position)
     {
-        if (NetworkManager.Singleton.LocalClientId == playerID)
-        {
-            ShowWinPanel(playerID, time, position);
-        }
+        // Muestra el panel a todos los clientes
+        ShowWinPanel(playerID, time, position);
     }
 
     public void ShowWinPanel(ulong playerID, float time, int position)
     {
         _panelWin.SetActive(true);
+
         if (NetworkManager.Singleton.LocalClientId == playerID)
         {
             winText.text = "Has finalizado la carrera en " + time.ToString("F2") + " segundos.";
-            finishPositionText.text = "Posición: " + position;
         }
         else
         {
             winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + time.ToString("F2") + " segundos.";
-            finishPositionText.text = "";
         }
+        finishPositionText.text = "Posicion: " + position;
     }
 
     public int GetPlayerPosition(ulong playerID)
     {
-        if (!playerProgress.Contains(playerID))
+        if (!finishedPlayers.ContainsKey(playerID))
         {
-            playerProgress.Add(playerID);
+            finishedPlayers.Add(playerID, playerRaceTimes[playerID]);
         }
 
-        playerProgress.Sort((playerID1, playerID2) => playerLaps[playerID2].CompareTo(playerLaps[playerID1]));
+        // Crea una lista ordenada de jugadores según las vueltas y el tiempo de carrera
+        var sortedPlayers = finishedPlayers.OrderBy(x => x.Value)
+                                          .ThenByDescending(x => playerLaps[x.Key])
+                                          .ToList();
 
-        return playerProgress.IndexOf(playerID) + 1;
+        int position = sortedPlayers.FindIndex(x => x.Key == playerID) + 1;
+
+        return position;
     }
+
+
+
 
     public void ReturnToMenu()
     {
