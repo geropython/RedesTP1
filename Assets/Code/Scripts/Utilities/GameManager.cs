@@ -11,11 +11,13 @@ public class GameManager : NetworkBehaviour
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
     public TextMeshProUGUI finishPositionText;
+    public TextMeshProUGUI positionText; // Nuevo texto para mostrar la posición actual
 
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-    private List<ulong> playerProgress = new List<ulong>();
+
     private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
+
     public static GameManager Instance { get; private set; }
     public bool raceOver = false;
     public ulong winningPlayerID;
@@ -43,6 +45,7 @@ public class GameManager : NetworkBehaviour
 
         playerLaps[playerID]++;
         UpdateLapText(playerID);
+        UpdatePositionServerRpc(playerID);
 
         if (playerLaps[playerID] >= 3)
         {
@@ -65,6 +68,26 @@ public class GameManager : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == playerID)
         {
             lapText.text = playerLaps[playerID] + "/3";
+            // Llama al ServerRpc para actualizar la posición
+            UpdatePositionServerRpc(playerID);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdatePositionServerRpc(ulong playerID) //REVISAR
+    {
+        // Obtiene el número total de jugadores
+        int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+        // Actualiza el texto de la posición
+        UpdatePositionClientRpc(playerID, GetPlayerPosition(playerID), totalPlayers);
+    }
+
+    [ClientRpc]
+    public void UpdatePositionClientRpc(ulong playerID, int position, int totalPlayers)  //REVISAR
+    {
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            positionText.text = "Posicion: " + position + "/" + totalPlayers;
         }
     }
 
@@ -76,6 +99,7 @@ public class GameManager : NetworkBehaviour
 
         // Llama al RPC del cliente para mostrar el panel de victoria
         ShowWinPanelClientRpc(playerID, time, position);
+        Debug.Log("Jugador " + playerID + " terminó la carrera en la posición " + position); //ESTE DEBUGEO NO SALTÓ NUNCA EN CONSOLA; PUEDE QUE ACÁ HAYA UN PROBLEMA?
     }
 
     [ClientRpc]
@@ -92,12 +116,13 @@ public class GameManager : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == playerID)
         {
             winText.text = "Has finalizado la carrera en " + time.ToString("F2") + " segundos.";
+            finishPositionText.text = "Posicion: " + position;
         }
         else
         {
             winText.text = "El jugador " + playerID + " ha finalizado la carrera en " + time.ToString("F2") + " segundos.";
+            finishPositionText.text = "Posicion: " + position;
         }
-        finishPositionText.text = "Posicion: " + position;
     }
 
     public int GetPlayerPosition(ulong playerID)
@@ -107,18 +132,20 @@ public class GameManager : NetworkBehaviour
             finishedPlayers.Add(playerID, playerRaceTimes[playerID]);
         }
 
-        // Crea una lista ordenada de jugadores según las vueltas y el tiempo de carrera
-        var sortedPlayers = finishedPlayers.OrderBy(x => x.Value)
-                                          .ThenByDescending(x => playerLaps[x.Key])
-                                          .ToList();
+        var sortedPlayers = finishedPlayers
+            .OrderByDescending(x => playerLaps[x.Key])
+            .ThenBy(x => x.Value)
+            .ToList();
 
-        int position = sortedPlayers.FindIndex(x => x.Key == playerID) + 1;
+        // Obtiene el número de jugadores que han completado la carrera.
+        int totalPlayers = sortedPlayers.Count;
 
-        return position;
+        // Encuentra el índice del jugador en la lista de jugadores terminados.
+        int playerIndex = sortedPlayers.FindIndex(x => x.Key == playerID);
+
+        // Devuelve la posición del jugador en la carrera, teniendo en cuenta el número total de jugadores que han completado la carrera.
+        return playerIndex + 1;
     }
-
-
-
 
     public void ReturnToMenu()
     {

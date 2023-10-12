@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -32,7 +31,6 @@ public class CarController : NetworkBehaviour
     public float finishTime;
     public NetworkObject networkObject;
     public int finishPosition;
-
 
     //BOX:
     public Vector3 lastCheckpointPosition;
@@ -114,8 +112,6 @@ public class CarController : NetworkBehaviour
         // Actualizar velocidad actual
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, brakeSpeed * Time.deltaTime);
     }
-
-   
 
     private void MoveCar()
     {

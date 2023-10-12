@@ -3,33 +3,12 @@ using UnityEngine;
 
 public class Box : NetworkBehaviour
 {
-    //BOX QUE FUNCIONA COMO TRAMPA, YA QUE REESTABLECE LA VEHICULO AL ULTIMO CHECKPOINT(RESETCHECKPOINT) Y ADEMAS INTERFIERE LA VISTA CON UNA GRAN EXPLOSION.
-
-    public GameObject explosionParticlePrefab;
+    [SerializeField] private GameObject explosionParticlePrefab;
     [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 100, 0);
 
     private void Update()
     {
         transform.Rotate(rotationSpeed * Time.deltaTime);
-    }
-
-    [ServerRpc]
-    private void RequestExplosionServerRpc(ulong playerID)
-    {
-        // Este RPC será llamado por el Host
-        // Llama al ClientRpc para notificar a todos los clientes
-        TriggerExplosionClientRpc(playerID);
-    }
-
-    [ClientRpc]
-    private void TriggerExplosionClientRpc(ulong playerID)
-    {
-        // Este RPC será llamado en todos los clientes
-        // Desactiva la caja para todos los jugadores
-        gameObject.SetActive(false);
-
-        // Instancia la partícula de explosión
-        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
     }
 
     [System.Obsolete]
@@ -40,24 +19,51 @@ public class Box : NetworkBehaviour
 
         ulong playerID = player.OwnerClientId;
 
-        if (IsOwner) //no autoritativo.
+        if (IsServer) // No autoritativo.
         {
-            ResetPlayerToCheckpointClientRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
-            RequestExplosionServerRpc(playerID);
+            RequestResetCheckpointServerRpc(playerID, player.lastCheckpointPosition, player.lastCheckpointRotation);
+        }
+    }
+
+    [ServerRpc]
+    [System.Obsolete]
+    private void RequestResetCheckpointServerRpc(ulong playerID, Vector3 position, Quaternion rotation)
+    {
+        ApplyResetCheckpointClientRpc(playerID, position, rotation);
+    }
+
+    [ClientRpc]
+    [System.Obsolete]
+    private void ApplyResetCheckpointClientRpc(ulong playerID, Vector3 position, Quaternion rotation)
+    {
+        CarController player = FindPlayerById(playerID);
+        if (player != null && player.IsOwner)
+        {
+            // Restablece al jugador a su checkpoint
+            player.transform.position = position;
+            player.transform.rotation = rotation;
+            InstantiateParticlesClientRpc();
+        }
+        if (IsServer)
+        {
+            DespawnServerRpc();
         }
     }
 
     [ClientRpc]
     [System.Obsolete]
-    private void ResetPlayerToCheckpointClientRpc(ulong playerID, Vector3 position, Quaternion rotation)
+    private void InstantiateParticlesClientRpc()
     {
-        CarController player = FindPlayerById(playerID);
-        if (player != null)
-        {
-            // Restablece al jugador a su checkpoint
-            player.transform.position = position;
-            player.transform.rotation = rotation;
-        }
+        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    [System.Obsolete]
+    private void DespawnServerRpc()
+    {
+        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
+        NetworkObject.Despawn();
     }
 
     [System.Obsolete]

@@ -1131,6 +1131,7 @@ MonoBehaviour:
   winText: {fileID: 846573268}
   lapText: {fileID: 1315758661}
   finishPositionText: {fileID: 2106299020}
+  positionText: {fileID: 907683684}
   raceOver: 0
   winningPlayerID: 0
 --- !u!114 &341447488
@@ -3849,7 +3850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &907683683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3864,10 +3865,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1882960864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -234, y: -998}
-  m_SizeDelta: {x: 388.87183, y: 49.6407}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -267, y: 133}
+  m_SizeDelta: {x: 446.9348, y: 86.11621}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &907683684
 MonoBehaviour:
@@ -3889,7 +3890,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Position
+  m_text: 0/3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
   m_sharedMaterial: {fileID: -1980494114920017750, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
@@ -3923,7 +3924,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3954,7 +3955,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 1.1320496, y: 0, z: -125.79614, w: -19.53592}
+  m_margin: {x: 1.1320496, y: 0, z: -156.92041, w: -86.72166}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -8683,7 +8684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2039847169
 Transform:
   m_ObjectHideFlags: 0
