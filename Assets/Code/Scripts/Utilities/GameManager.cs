@@ -15,6 +15,7 @@ public class GameManager : NetworkBehaviour
 
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
+    private Dictionary<ulong, List<float>> playerLapTimes = new Dictionary<ulong, List<float>>();
 
     private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
 
@@ -45,7 +46,12 @@ public class GameManager : NetworkBehaviour
 
         playerLaps[playerID]++;
         UpdateLapText(playerID);
-        UpdatePositionServerRpc(playerID);
+
+        if (!playerLapTimes.ContainsKey(playerID))
+        {
+            playerLapTimes[playerID] = new List<float>();
+        }
+        playerLapTimes[playerID].Add(Time.time);
 
         if (playerLaps[playerID] >= 3)
         {
@@ -61,6 +67,11 @@ public class GameManager : NetworkBehaviour
             // Llama a la función en el carController para finalizar la carrera y despawnear
             carController.FinishRaceAndDespawn(finishTime, finishPosition);
         }
+        else
+        {
+            // Llama a UpdatePositionServerRpc() para actualizar la posición del jugador en la UI
+            UpdatePositionServerRpc(playerID);
+        }
     }
 
     public void UpdateLapText(ulong playerID)
@@ -69,25 +80,27 @@ public class GameManager : NetworkBehaviour
         {
             lapText.text = playerLaps[playerID] + "/3";
             // Llama al ServerRpc para actualizar la posición
-            UpdatePositionServerRpc(playerID);
+            //UpdatePositionServerRpc(playerID);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void UpdatePositionServerRpc(ulong playerID) //REVISAR
     {
-        // Obtiene el número total de jugadores
         int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
         // Actualiza el texto de la posición
         UpdatePositionClientRpc(playerID, GetPlayerPosition(playerID), totalPlayers);
     }
 
     [ClientRpc]
-    public void UpdatePositionClientRpc(ulong playerID, int position, int totalPlayers)  //REVISAR
+    public void UpdatePositionClientRpc(ulong playerID, int position, int totalPlayers)
     {
         if (NetworkManager.Singleton.LocalClientId == playerID)
         {
-            positionText.text = "Posicion: " + position + "/" + totalPlayers;
+            if (positionText != null)
+            {
+                positionText.text = "Posicion: " + position + "/" + totalPlayers;
+            }
         }
     }
 
@@ -99,7 +112,7 @@ public class GameManager : NetworkBehaviour
 
         // Llama al RPC del cliente para mostrar el panel de victoria
         ShowWinPanelClientRpc(playerID, time, position);
-        Debug.Log("Jugador " + playerID + " terminó la carrera en la posición " + position); //ESTE DEBUGEO NO SALTÓ NUNCA EN CONSOLA; PUEDE QUE ACÁ HAYA UN PROBLEMA?
+        Debug.Log("Jugador " + playerID + " terminó la carrera en la posición " + position);// NO SE MUESTRA.
     }
 
     [ClientRpc]
@@ -127,12 +140,7 @@ public class GameManager : NetworkBehaviour
 
     public int GetPlayerPosition(ulong playerID)
     {
-        if (!finishedPlayers.ContainsKey(playerID))
-        {
-            finishedPlayers.Add(playerID, playerRaceTimes[playerID]);
-        }
-
-        var sortedPlayers = finishedPlayers
+        var sortedPlayers = playerRaceTimes
             .OrderByDescending(x => playerLaps[x.Key])
             .ThenBy(x => x.Value)
             .ToList();

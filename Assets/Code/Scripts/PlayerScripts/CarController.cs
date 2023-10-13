@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -37,6 +38,7 @@ public class CarController : NetworkBehaviour
 
     public Quaternion lastCheckpointRotation;
 
+    [System.Obsolete]
     private void Start()
     {
         if (!IsOwner)

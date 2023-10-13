@@ -31,4 +31,3 @@ public class Checkpoint : MonoBehaviour
         cleared = false;
     }
 }
-
