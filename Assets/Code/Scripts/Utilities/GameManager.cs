@@ -7,21 +7,23 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
+    //PUBLIC FIELDS
     public GameObject _panelWin;
+
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
     public TextMeshProUGUI finishPositionText;
-    public TextMeshProUGUI positionText; // Nuevo texto para mostrar la posición actual
-
-    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
-    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-    private Dictionary<ulong, List<float>> playerLapTimes = new Dictionary<ulong, List<float>>();
-
-    private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
-
+    public TextMeshProUGUI positionText;
     public static GameManager Instance { get; private set; }
     public bool raceOver = false;
     public ulong winningPlayerID;
+
+    //PRIVATE FIELDS:
+    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
+
+    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
+    private Dictionary<ulong, List<float>> playerLapTimes = new Dictionary<ulong, List<float>>();
+    private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
 
     private void Awake()
     {
@@ -58,10 +60,10 @@ public class GameManager : NetworkBehaviour
             // Solo añade al jugador a la lista de jugadores terminados si no está ya en la lista
             if (!finishedPlayers.ContainsKey(playerID))
             {
-                finishedPlayers.Add(playerID, Time.time);
+                finishedPlayers.Add(playerID, Time.time - playerRaceTimes[playerID]);
             }
 
-            float finishTime = Time.time;
+            float finishTime = Time.time - playerRaceTimes[playerID];
             int finishPosition = GetPlayerPosition(playerID);
 
             // Llama a la función en el carController para finalizar la carrera y despawnear
@@ -140,13 +142,9 @@ public class GameManager : NetworkBehaviour
 
     public int GetPlayerPosition(ulong playerID)
     {
-        var sortedPlayers = playerRaceTimes
-            .OrderByDescending(x => playerLaps[x.Key])
-            .ThenBy(x => x.Value)
+        var sortedPlayers = finishedPlayers
+            .OrderBy(x => x.Value)
             .ToList();
-
-        // Obtiene el número de jugadores que han completado la carrera.
-        int totalPlayers = sortedPlayers.Count;
 
         // Encuentra el índice del jugador en la lista de jugadores terminados.
         int playerIndex = sortedPlayers.FindIndex(x => x.Key == playerID);
