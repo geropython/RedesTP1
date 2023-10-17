@@ -1,15 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : NetworkBehaviour
+public class GameManager : NetworkBehaviour, IRaceLeaderboardUI
 {
-    //PUBLIC FIELDS
-    public GameObject _panelWin;
-
     public TextMeshProUGUI winText;
     public TextMeshProUGUI lapText;
     public TextMeshProUGUI finishPositionText;
@@ -17,13 +12,9 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
     public bool raceOver = false;
     public ulong winningPlayerID;
+    public GameObject _panelWin;
 
-    //PRIVATE FIELDS:
-    private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
-
-    private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
-    private Dictionary<ulong, List<float>> playerLapTimes = new Dictionary<ulong, List<float>>();
-    private Dictionary<ulong, float> finishedPlayers = new Dictionary<ulong, float>();
+    public RaceLeaderBoard leaderboard;
 
     private void Awake()
     {
@@ -36,62 +27,37 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+
+        leaderboard = new RaceLeaderBoard(this);
     }
 
     public void IncreaseLap(ulong playerID, CarController carController)
     {
-        if (!playerLaps.ContainsKey(playerID))
+        leaderboard.IncreaseLap(playerID);
+
+        if (leaderboard.GetPlayerLap(playerID) >= 3)
         {
-            playerLaps[playerID] = 0;
-            playerRaceTimes[playerID] = Time.time;
-        }
+            float finishTime = leaderboard.GetPlayerRaceTime(playerID);
+            int finishPosition = leaderboard.GetPlayerPosition(playerID);
 
-        playerLaps[playerID]++;
-        UpdateLapText(playerID);
-
-        if (!playerLapTimes.ContainsKey(playerID))
-        {
-            playerLapTimes[playerID] = new List<float>();
-        }
-        playerLapTimes[playerID].Add(Time.time);
-
-        if (playerLaps[playerID] >= 3)
-        {
-            // Solo añade al jugador a la lista de jugadores terminados si no está ya en la lista
-            if (!finishedPlayers.ContainsKey(playerID))
-            {
-                finishedPlayers.Add(playerID, Time.time - playerRaceTimes[playerID]);
-            }
-
-            float finishTime = Time.time - playerRaceTimes[playerID];
-            int finishPosition = GetPlayerPosition(playerID);
-
-            // Llama a la función en el carController para finalizar la carrera y despawnear
             carController.FinishRaceAndDespawn(finishTime, finishPosition);
         }
         else
         {
-            // Llama a UpdatePositionServerRpc() para actualizar la posición del jugador en la UI
-            UpdatePositionServerRpc(playerID);
-        }
-    }
-
-    public void UpdateLapText(ulong playerID)
-    {
-        if (NetworkManager.Singleton.LocalClientId == playerID)
-        {
-            lapText.text = playerLaps[playerID] + "/3";
-            // Llama al ServerRpc para actualizar la posición
-            //UpdatePositionServerRpc(playerID);
+            UpdatePositionsServerRpc();
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void UpdatePositionServerRpc(ulong playerID) //REVISAR
+    public void UpdatePositionsServerRpc()
     {
         int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
-        // Actualiza el texto de la posición
-        UpdatePositionClientRpc(playerID, GetPlayerPosition(playerID), totalPlayers);
+        foreach (var player in NetworkManager.Singleton.ConnectedClients)
+        {
+            ulong playerID = player.Key;
+            int position = leaderboard.GetPlayerPosition(playerID);
+            UpdatePositionClientRpc(playerID, position, totalPlayers);
+        }
     }
 
     [ClientRpc]
@@ -112,15 +78,12 @@ public class GameManager : NetworkBehaviour
         winningPlayerID = playerID;
         raceOver = true;
 
-        // Llama al RPC del cliente para mostrar el panel de victoria
         ShowWinPanelClientRpc(playerID, time, position);
-        Debug.Log("Jugador " + playerID + " terminó la carrera en la posición " + position);// NO SE MUESTRA.
     }
 
     [ClientRpc]
     public void ShowWinPanelClientRpc(ulong playerID, float time, int position)
     {
-        // Muestra el panel a todos los clientes
         ShowWinPanel(playerID, time, position);
     }
 
@@ -140,21 +103,25 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    public int GetPlayerPosition(ulong playerID)
-    {
-        var sortedPlayers = finishedPlayers
-            .OrderBy(x => x.Value)
-            .ToList();
-
-        // Encuentra el índice del jugador en la lista de jugadores terminados.
-        int playerIndex = sortedPlayers.FindIndex(x => x.Key == playerID);
-
-        // Devuelve la posición del jugador en la carrera, teniendo en cuenta el número total de jugadores que han completado la carrera.
-        return playerIndex + 1;
-    }
-
     public void ReturnToMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    // Implementación de la interfaz IRaceLeaderboardUI
+    public void UpdateLapText(ulong playerID, int lap)
+    {
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            lapText.text = lap + "/3";
+        }
+    }
+
+    public void UpdatePositionText(ulong playerID, int position, int totalPlayers)
+    {
+        if (NetworkManager.Singleton.LocalClientId == playerID)
+        {
+            positionText.text = "Posicion: " + position + "/" + totalPlayers;
+        }
     }
 }

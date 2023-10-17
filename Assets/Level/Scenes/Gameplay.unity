@@ -1093,6 +1093,7 @@ GameObject:
   - component: {fileID: 341447486}
   - component: {fileID: 341447487}
   - component: {fileID: 341447488}
+  - component: {fileID: 341447489}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1134,6 +1135,7 @@ MonoBehaviour:
   positionText: {fileID: 907683684}
   raceOver: 0
   winningPlayerID: 1
+  positionUpdateInterval: 1
 --- !u!114 &341447488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,6 +1156,36 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &341447489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341447483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a692e82b616b282408ae215f6cdbfe95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &353440839
 GameObject:
   m_ObjectHideFlags: 0
@@ -3850,7 +3882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &907683683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3890,7 +3922,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/3
+  m_text: posicion
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
   m_sharedMaterial: {fileID: -1980494114920017750, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
@@ -3917,10 +3949,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -8912,7 +8944,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: posicion
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
   m_sharedMaterial: {fileID: -1980494114920017750, guid: 7bdc2d57fae18a84b8c4b5e5c5eab594, type: 2}
