@@ -45,6 +45,7 @@ public class GameManager : NetworkBehaviour, IRaceLeaderboardUI
         else
         {
             UpdatePositionsServerRpc();
+            Debug.Log("Winning Player ID:" + winningPlayerID);
         }
     }
 
@@ -77,8 +78,13 @@ public class GameManager : NetworkBehaviour, IRaceLeaderboardUI
     {
         winningPlayerID = playerID;
         raceOver = true;
-
+        Debug.Log(" Completó la carrera");
         ShowWinPanelClientRpc(playerID, time, position);
+    }
+
+    public void FinishRace(ulong playerID, float time, int position)
+    {
+        FinishRaceServerRpc(playerID, time, position);
     }
 
     [ClientRpc]

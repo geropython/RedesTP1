@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RaceLeaderBoard
+public class RaceLeaderBoard : NetworkBehaviour
 {
     private Dictionary<ulong, int> playerLaps = new Dictionary<ulong, int>();
     private Dictionary<ulong, float> playerRaceTimes = new Dictionary<ulong, float>();
@@ -56,7 +57,6 @@ public class RaceLeaderBoard
         int playerIndex = sortedPlayers.FindIndex(x => x.Key == playerID);
         return playerIndex + 1;
     }
-
 
     public int GetPlayerLap(ulong playerID)
     {
