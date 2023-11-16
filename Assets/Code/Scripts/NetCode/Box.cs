@@ -30,6 +30,7 @@ public class Box : NetworkBehaviour
     private void RequestResetCheckpointServerRpc(ulong playerID, Vector3 position, Quaternion rotation)
     {
         ApplyResetCheckpointClientRpc(playerID, position, rotation);
+        InstantiateParticlesClientRpc();
     }
 
     [ClientRpc]

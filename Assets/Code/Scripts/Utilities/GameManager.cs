@@ -79,7 +79,7 @@ public class GameManager : NetworkBehaviour, IRaceLeaderboardUI
         winningPlayerID = playerID;
         raceOver = true;
         Debug.Log(" Completó la carrera");
-        ShowWinPanelClientRpc(playerID, time, position);
+        ShowWinPanelClientRpc(playerID, time, leaderboard.GetPlayerPosition(playerID));
     }
 
     public void FinishRace(ulong playerID, float time, int position)

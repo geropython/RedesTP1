@@ -54,8 +54,8 @@ public class RaceLeaderBoard : NetworkBehaviour
             .ThenBy(x => playerRaceTimes[x.Key])
             .ToList();
 
-        int playerIndex = sortedPlayers.FindIndex(x => x.Key == playerID);
-        return playerIndex + 1;
+        int playerPosition = sortedPlayers.FindIndex(x => x.Key == playerID) + 1;
+        return playerPosition;
     }
 
     public int GetPlayerLap(ulong playerID)
