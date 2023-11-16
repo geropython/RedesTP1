@@ -50,8 +50,7 @@ public class RaceLeaderBoard : NetworkBehaviour
     {
         var sortedPlayers = playerLaps
             .Where(x => !finishedPlayers.ContainsKey(x.Key))
-            .OrderByDescending(x => x.Value)
-            .ThenBy(x => playerRaceTimes[x.Key])
+            .OrderBy(x => GetTotalRaceTime(x.Key)) // Ordenar por tiempo total de la carrera
             .ToList();
 
         int playerPosition = sortedPlayers.FindIndex(x => x.Key == playerID) + 1;
@@ -68,9 +67,14 @@ public class RaceLeaderBoard : NetworkBehaviour
         return playerRaceTimes.ContainsKey(playerID) ? playerRaceTimes[playerID] : 0;
     }
 
-    public List<float> GetPlayerLapTimes(ulong playerID)
+    //public List<float> GetPlayerLapTimes(ulong playerID)
+    //{
+    //    return playerLapTimes.ContainsKey(playerID) ? playerLapTimes[playerID] : new List<float>();
+    //}
+
+    public float GetTotalRaceTime(ulong playerID)
     {
-        return playerLapTimes.ContainsKey(playerID) ? playerLapTimes[playerID] : new List<float>();
+        return playerRaceTimes.ContainsKey(playerID) ? playerRaceTimes[playerID] : 0;
     }
 
     public int GetTotalPlayers()

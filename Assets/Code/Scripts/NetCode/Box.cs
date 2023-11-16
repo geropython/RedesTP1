@@ -63,8 +63,11 @@ public class Box : NetworkBehaviour
     [System.Obsolete]
     private void DespawnServerRpc()
     {
-        Instantiate(explosionParticlePrefab, transform.position, Quaternion.identity);
-        NetworkObject.Despawn();
+        if (IsServer)
+        {
+            InstantiateParticlesClientRpc();
+            NetworkObject.Despawn();
+        }
     }
 
     [System.Obsolete]

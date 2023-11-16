@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -53,11 +54,20 @@ public class GameManager : NetworkBehaviour, IRaceLeaderboardUI
     public void UpdatePositionsServerRpc()
     {
         int totalPlayers = NetworkManager.Singleton.ConnectedClients.Count;
-        foreach (var player in NetworkManager.Singleton.ConnectedClients)
+
+        var sortedPlayers = NetworkManager.Singleton.ConnectedClients
+            .Select(player => new
+            {
+                PlayerID = player.Key,
+                Position = leaderboard.GetPlayerPosition(player.Key),
+                TotalRaceTime = leaderboard.GetTotalRaceTime(player.Key)
+            })
+            .OrderBy(player => player.TotalRaceTime)
+            .ToList();
+
+        foreach (var player in sortedPlayers)
         {
-            ulong playerID = player.Key;
-            int position = leaderboard.GetPlayerPosition(playerID);
-            UpdatePositionClientRpc(playerID, position, totalPlayers);
+            UpdatePositionClientRpc(player.PlayerID, player.Position, totalPlayers);
         }
     }
 
