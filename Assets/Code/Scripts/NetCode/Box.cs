@@ -43,7 +43,6 @@ public class Box : NetworkBehaviour
             // Restablece al jugador a su checkpoint
             player.transform.position = position;
             player.transform.rotation = rotation;
-            InstantiateParticlesClientRpc();
         }
         if (IsServer)
         {

@@ -46,10 +46,10 @@ public class RaceLeaderBoard : NetworkBehaviour
         ui.UpdatePositionText(playerID, GetPlayerPosition(playerID), GetTotalPlayers());
     }
 
+    //No excluye a jugadores que terminaron la carrera supuestamente.
     public int GetPlayerPosition(ulong playerID)
     {
         var sortedPlayers = playerLaps
-            .Where(x => !finishedPlayers.ContainsKey(x.Key))
             .OrderBy(x => GetTotalRaceTime(x.Key)) // Ordenar por tiempo total de la carrera
             .ToList();
 

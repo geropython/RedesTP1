@@ -35,7 +35,6 @@ public class BoostBox : NetworkBehaviour
         if (player != null && player.IsOwner)
         {
             player.ApplyBoost(boostAmount, boostDuration);
-            InstantiateParticlesClientRpc();
         }
         if (IsServer)
         {
@@ -55,7 +54,7 @@ public class BoostBox : NetworkBehaviour
     [System.Obsolete]
     private void DespawnServerRpc()
     {
-        Instantiate(speedParticle, transform.position, Quaternion.identity);
+        InstantiateParticlesClientRpc();
         NetworkObject.Despawn();
     }
 
