@@ -42,6 +42,7 @@ public class CountDownTimer : NetworkBehaviour
             timer.StartTimer();
     }
 
+    //no iria RPC
     [ClientRpc]
     [System.Obsolete]
     public void AllowMovementClientRpc()
